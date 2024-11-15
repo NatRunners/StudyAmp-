@@ -39,6 +39,13 @@ const VisualizeFocus = () => {
 
   useEffect(() => {
     // Fetch data from API or use mock data
+    //use mock data for time being
+    setSummaryStats({
+        totalSessions: 10,
+        averageFocusDuration: '1h 20m',
+        averageFocusLevel: 75,
+    });
+    
   }, []);
 
   return (

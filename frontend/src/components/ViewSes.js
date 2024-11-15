@@ -46,6 +46,44 @@ const ViewSes = () => {
   useEffect(() => {
     // If you're fetching data from an API, replace this mock data with an API call here.
     // Example: fetchSessionsFromAPI().then(data => setSessions(data));
+    //use mock data for time being
+    setSessions([
+      {
+        id: 1,
+        name: 'Focus Session 1',
+        description: 'A productive morning session.',
+        date: '2023-11-01',
+        duration: '1h 30m',
+      },
+      {
+        id: 2,
+        name: 'Afternoon Focus',
+        description: 'Worked on learning objectives.',
+        date: '2023-11-02',
+        duration: '2h 00m',
+      },
+      {
+        id: 3,
+        name: 'Evening Deep Work',
+        description: 'Focused on reading and understanding.',
+        date: '2023-11-03',
+        duration: '1h 45m',
+      },
+      {
+        id: 4,
+        name: 'Night Study',
+        description: 'Focused on project work.',
+        date: '2023-11-04',
+        duration: '2h 15m',
+      },
+      {
+        id: 5,
+        name: 'Early Morning Focus',
+        description: 'Worked on important tasks.',
+        date: '2023-11-05',
+        duration: '1h 20m',
+      },
+    ]);
   }, []);
 
   // Show only the last 4 sessions
