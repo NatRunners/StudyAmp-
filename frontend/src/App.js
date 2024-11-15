@@ -6,6 +6,8 @@ import LandingPage from "./components/LandingPage";
 import FadeIn from "react-fade-in";
 import "./App.css";
 import CreateSes from "./components/CreateSes";
+import ViewSes from "./components/ViewSes";
+import VisualizeFocus from "./components/VisualizeFocus";
 
 
 // Define the dark theme inline
@@ -35,9 +37,20 @@ function App() {
         <section id="landing">
         <LandingPage />
         </section>
+        
         <section id="create">
         <CreateSes />
         </section>
+
+        <section id="view">
+        <ViewSes />
+        </section>
+
+        <section id="visualize">
+        <VisualizeFocus />
+        </section>
+
+
         </FadeIn>
 
 
