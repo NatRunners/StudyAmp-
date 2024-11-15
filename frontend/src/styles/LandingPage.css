@@ -47,11 +47,11 @@
 }
 
 .landing-section .content h1 {
-    color: #EEEEEE;
-    text-shadow: 1px 1px 1px black;
+    color: #DDDDDD;
+    text-shadow: 2px 0px 3px black;
     font-size: 5em;
     margin: 0;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
 }
 
 .landing-section .content p {
@@ -66,23 +66,23 @@
 @keyframes glowChange {
     0% {
         color: #FFC000;
-        text-shadow: 1px 1px 1px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
+        text-shadow: 1px 0px 2px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
     }
     25% {
         color: #4F7942; 
-        text-shadow: 1px 1px 1px black, 0 0 1px #4F7942, 0 0 3px #4F7942;
+        text-shadow: 1px 0px 2px black, 0 0 1px #4F7942, 0 0 3px #4F7942;
     }
     50% {
         color: #F08000; 
-        text-shadow: 1px 1px 1px black,  0 0 1px #F08000, 0 0 3px #F08000;
+        text-shadow: 1px 0px 2px black,  0 0 1px #F08000, 0 0 3px #F08000;
     }
     75% {
         color: #065465;
-        text-shadow: 1px 1px 1px black, 0 0 1px #065465, 0 0 3px #065465;
+        text-shadow: 1px 0px 2px black, 0 0 1px #065465, 0 0 3px #065465;
     }
     100% {
         color: #FFC000;
-        text-shadow: 1px 1px 1px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
+        text-shadow: 1px 0px 2px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
     }
 }
 
