@@ -1,6 +1,12 @@
 import numpy as np
 from scipy.signal import butter, lfilter, welch
 from enum import Enum
+import warnings
+
+# Suppress specific warnings
+warnings.filterwarnings("ignore", message="nperseg = 256 is greater than input length")
+warnings.filterwarnings("ignore", message="Mean of empty slice.")
+warnings.filterwarnings("ignore", message="invalid value encountered in scalar divide")
 
 class Band(Enum):
     Delta = (0.5, 4)
