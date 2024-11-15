@@ -1,0 +1,149 @@
+/* Dark mode styling */
+.dark-mode .landing-section {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Landing section styles */
+.landing-section {
+    display: flex;
+    gap: 30px;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 0 15%;
+    min-height: 700px;
+    background-image: url("../images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: white;
+}
+
+.landing-section .content {
+    text-align: left;
+    z-index: 2;
+
+    .social_icons {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        color: white;
+
+        svg {
+            font-size: 1.8em;
+        }
+    }
+
+    .mobile_social_icons {
+        display: none;
+    }
+
+    p {
+        font-size: 1.5em;
+        margin: 0;
+    }
+
+    h1 {
+        font-size: 5em;
+        margin: 0;
+    }
+}
+
+.landing-section .image-wrapper {
+    z-index: 2;
+
+    img {
+        width: 150px;
+        border-radius: 50%;
+    }
+}
+
+/* Responsive styling */
+@media screen and (max-width: 567px) {
+    .nav-left {
+        padding-top: 20px;
+        float: left;
+    }
+
+    .nav-left img {
+        height: 35px;
+    }
+
+    .nav-right {
+        float: right;
+    }
+
+    .nav-right li {
+        padding: 10px 15px;
+        list-style: none;
+        font-size: 13px;
+        color: white;
+        width: 10%;
+    }
+
+    .nav-right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        width: 100%;
+    }
+
+    .landing-section {
+        padding-left: 5%;
+        padding-right: 5%;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .landing-section h1 {
+        font-size: 4em !important;
+        text-align: left;
+    }
+
+    .landing-section p {
+        text-align: left;
+    }
+
+    .container {
+        display: initial;
+    }
+
+    .social_icons {
+        display: none !important;
+    }
+
+    .mobile_social_icons {
+        padding-top: 10px;
+        display: flex !important;
+        flex-direction: row;
+        gap: 10px;
+        color: white;
+
+        svg {
+            font-size: 1.8em;
+        }
+    }
+
+    .landing-section {
+        padding-top: 150px;
+        display: block;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .landing-section .content {
+        width: 90%;
+        padding: 0 5%;
+        padding-bottom: 5%;
+    }
+
+    .landing-section .image-wrapper {
+        padding-left: 5%;
+        width: 100%;
+    }
+}
