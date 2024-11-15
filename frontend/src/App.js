@@ -4,6 +4,9 @@ import { CssBaseline } from "@mui/material";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import FadeIn from "react-fade-in";
+import "./App.css";
+import CreateSes from "./components/CreateSes";
+
 
 // Define the dark theme inline
 const darkTheme = createTheme({
@@ -29,7 +32,12 @@ function App() {
       <CssBaseline />
       <Navigation />
         <FadeIn transitionDuration={700}>
-          <LandingPage />
+        <section id="landing">
+        <LandingPage />
+        </section>
+        <section id="create">
+        <CreateSes />
+        </section>
         </FadeIn>
 
 

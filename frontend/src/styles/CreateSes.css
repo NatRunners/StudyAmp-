@@ -1,0 +1,87 @@
+/* Full-page background with gradient overlay */
+.create-ses-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../images/background.jpg"); /* Same background as landing page */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: #ffffff;
+    text-align: center;
+    padding: 0 20px;
+}
+
+/* Centered text content */
+.text-content {
+    max-width: 800px;
+    animation: fadeIn 1.5s ease-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading and paragraph styling */
+.text-content h1 {
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7); /* Subtle text shadow */
+}
+
+.text-content p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    color: #e0e0e0;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Start session button with glow effect */
+.start-session-button {
+    padding: 14px 28px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #3a8dff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 0px 15px rgba(58, 141, 255, 0.5); /* Button glow effect */
+}
+
+.start-session-button:hover {
+    background-color: #5d5eff;
+    box-shadow: 0px 0px 25px rgba(93, 94, 255, 0.8); /* Stronger glow on hover */
+}
+
+.start-session-button:active {
+    transform: scale(0.98);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .text-content h1 {
+        font-size: 2.5em;
+    }
+    .text-content p {
+        font-size: 1em;
+    }
+    .start-session-button {
+        padding: 12px 24px;
+        font-size: 1.1em;
+    }
+}
