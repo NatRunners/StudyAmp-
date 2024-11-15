@@ -17,9 +17,9 @@ const drawerWidth = 240;
 // Updated navigation items
 const navItems = [
   ["Home", "landing"],
-  ["Create Session", "create"],
-  ["View Past Sessions", "view"],
-  ["Visualize Focus Data", "visualize"],
+  ["New Session", "create"],
+  ["Past Sessions", "view"],
+  ["Overview", "visualize"],
 ];
 
 const Navigation = () => {
@@ -98,7 +98,12 @@ const Navigation = () => {
             {navItems.map(([label, id]) => (
               <Button
                 key={id}
-                sx={{ color: "#ffffff" }}
+                sx={{ 
+                  color: "#ffffff", 
+                  textTransform: "none", 
+                  fontSize: "1.25rem",
+                  padding: "10px 12px"
+                }}
                 onClick={() => scrollToSection(id)}
               >
                 {label}

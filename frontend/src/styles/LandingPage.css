@@ -11,7 +11,7 @@
     align-items: center;
     width: 100%;
     padding: 0 15%;
-    min-height: 700px;
+    height: 100vh;
     background-image: url("../images/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -23,41 +23,69 @@
 .landing-section .content {
     text-align: left;
     z-index: 2;
+    font-size: 1.1rem;
+}
 
-    .social_icons {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        color: white;
+.landing-section .content .social_icons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    color: white;
+}
 
-        svg {
-            font-size: 1.8em;
-        }
+.landing-section .content .social_icons svg {
+    font-size: 1.8em;
+}
+
+.landing-section .content .mobile_social_icons {
+    display: none;
+}
+
+.landing-section .content p {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.landing-section .content h1 {
+    color: #EEEEEE;
+    text-shadow: 1px 1px 1px black;
+    font-size: 5em;
+    margin: 0;
+    padding-bottom: 20px;
+}
+
+.landing-section .content p {
+    font-size: 2rem;
+}
+
+/* Glowing effect between gold, lighter green, orange, and darker turquoise blue */
+.color-changing {
+    animation: glowChange 8s infinite;
+}
+
+@keyframes glowChange {
+    0% {
+        color: #FFC000;
+        text-shadow: 1px 1px 1px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
     }
-
-    .mobile_social_icons {
-        display: none;
+    25% {
+        color: #4F7942; 
+        text-shadow: 1px 1px 1px black, 0 0 1px #4F7942, 0 0 3px #4F7942;
     }
-
-    p {
-        font-size: 1.5em;
-        margin: 0;
+    50% {
+        color: #F08000; 
+        text-shadow: 1px 1px 1px black,  0 0 1px #F08000, 0 0 3px #F08000;
     }
-
-    h1 {
-        font-size: 5em;
-        margin: 0;
+    75% {
+        color: #065465;
+        text-shadow: 1px 1px 1px black, 0 0 1px #065465, 0 0 3px #065465;
+    }
+    100% {
+        color: #FFC000;
+        text-shadow: 1px 1px 1px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
     }
 }
 
-.landing-section .image-wrapper {
-    z-index: 2;
-
-    img {
-        width: 150px;
-        border-radius: 50%;
-    }
-}
 
 /* Responsive styling */
 @media screen and (max-width: 567px) {

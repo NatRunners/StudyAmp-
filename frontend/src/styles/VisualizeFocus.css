@@ -11,14 +11,6 @@
     text-align: center;
 }
 
-/* Heading */
-.visualize-focus-page h1 {
-    font-size: 2.5em;
-    margin-bottom: 30px;
-    color: #ffffff;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
-}
-
 /* Summary statistics section */
 .summary-stats {
     display: flex;
@@ -33,24 +25,25 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 200px;
+    width: 300px;
     text-align: center;
 }
 
 .stat-item h2 {
-    font-size: 1.5em;
+    font-size: 1.6em;
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
 .stat-item p {
-    font-size: 1.2em;
+    font-size: 1.8em;
     font-weight: bold;
     color: #3a8dff;
 }
 
 /* Chart container styling */
 .chart-container {
-    max-width: 800px;
+    max-width: 960px;
     margin: 0 auto 40px;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.1);

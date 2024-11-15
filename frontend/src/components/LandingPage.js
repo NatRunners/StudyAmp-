@@ -5,8 +5,10 @@ const LandingPage = () => {
   return (
     <section id="landing" className="landing-section">
       <div className="content">
-        <h1>Welcome to StudyAmp</h1>
-        <p>Enhance your focus. Improve your learning.</p>
+        <h1>
+          Welcome to <span className="color-changing">StudyAmp</span>
+        </h1>
+        <p>Study Amplified, Focus Maximized.</p>
       </div>
     </section>
   );
