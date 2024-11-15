@@ -1,7 +1,7 @@
 /* Full-page background for the View Sessions page */
 .view-sessions-page {
     min-height: 100vh;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../images/background.jpg"); /* Same background as landing page */
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../images/background.jpg"); /* Same background as landing page */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
