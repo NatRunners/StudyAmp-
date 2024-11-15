@@ -1,14 +1,13 @@
 import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+import { motion } from "framer-motion"; // Import motion from Framer Motion
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
-import FadeIn from "react-fade-in";
 import "./App.css";
 import CreateSes from "./components/CreateSes";
 import ViewSes from "./components/ViewSes";
 import VisualizeFocus from "./components/VisualizeFocus";
-
 
 // Define the dark theme inline
 const darkTheme = createTheme({
@@ -28,35 +27,35 @@ const darkTheme = createTheme({
   },
 });
 
+// Animation settings for fade-in effect
+const fadeInSettings = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 0.7 },
+};
+
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Navigation />
-        <FadeIn transitionDuration={700}>
+      <motion.div {...fadeInSettings}>
         <section id="landing">
-        <LandingPage />
+          <LandingPage />
         </section>
-        
+
         <section id="create">
-        <CreateSes />
+          <CreateSes />
         </section>
 
         <section id="view">
-        <ViewSes />
+          <ViewSes />
         </section>
 
         <section id="visualize">
-        <VisualizeFocus />
+          <VisualizeFocus />
         </section>
-
-
-        </FadeIn>
-
-
-
-      
-      
+      </motion.div>
     </ThemeProvider>
   );
 }
