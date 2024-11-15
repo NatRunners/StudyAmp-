@@ -4,6 +4,16 @@ import '../styles/CreateSes.css';
 const CreateSes = () => {
   const handleStartSession = () => {
     // Handle session start logic here
+    const apiUrl = process.env.REACT_APP_API_URL;
+    const requestOptions = {
+      method: "POST",
+      redirect: "follow"
+    };
+    
+    fetch(`${apiUrl}/sessions`, requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
     console.log('Session Started');
   };
 
