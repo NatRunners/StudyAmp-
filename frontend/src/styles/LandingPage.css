@@ -58,30 +58,29 @@
     font-size: 2rem;
 }
 
-/* Glowing effect between gold, lighter green, orange, and darker turquoise blue */
 .color-changing {
     animation: glowChange 8s infinite;
 }
 
 @keyframes glowChange {
     0% {
-        color: #FFC000;
+        color: #FFC000; /* Gold */
         text-shadow: 1px 0px 2px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
     }
     25% {
-        color: #00A36C; 
+        color: #00A36C; /* Light green */
         text-shadow: 1px 0px 2px black, 0 0 1px #00A36C, 0 0 3px #00A36C;
     }
     50% {
-        color: #F08000; 
+        color: #F08000; /* Orange */
         text-shadow: 1px 0px 2px black,  0 0 1px #F08000, 0 0 3px #F08000;
     }
     75% {
-        color: #065465;
+        color: #065465; /* Turquoise */
         text-shadow: 1px 0px 2px black, 0 0 1px #065465, 0 0 3px #065465;
     }
     100% {
-        color: #FFC000;
+        color: #FFC000; /* Gold */
         text-shadow: 1px 0px 2px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
     }
 }
