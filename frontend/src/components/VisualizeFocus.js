@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
 import '../styles/VisualizeFocus.css';
+import '../styles/Global.css';
 
 // Register the necessary components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
@@ -50,7 +51,7 @@ const VisualizeFocus = () => {
 
   return (
     <div className="visualize-focus-page">
-      <h1>Focus Data Overview</h1>
+      <h1>Focus Overview</h1>
       
       <div className="summary-stats">
         <div className="stat-item">
