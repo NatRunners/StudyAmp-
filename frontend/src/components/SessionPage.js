@@ -8,12 +8,12 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Global.css';
 import '../styles/NewSession.css';
 import '../styles/SessionPage.css';
-import '../styles/Global.css';
 
 ChartJS.register(
   CategoryScale,
@@ -54,6 +54,15 @@ const SessionPage = () => {
   const lowAttentionPeriods = useRef([]);
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    if (processingStatus) {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [processingStatus]);
 
   const calculateMovingAverage = (scores) => {
     if (!scores || scores.length === 0) return 0;
@@ -172,7 +181,6 @@ const SessionPage = () => {
         };
       });
 
-      // Reset states
       setMovingAverage(0);
       setAttentionScores([]);
       audioChunks.current = [];
@@ -228,7 +236,6 @@ const SessionPage = () => {
         });
       }
 
-      // Update attention scores array for moving average
       setAttentionScores(prev => {
         const newScores = [...prev, attentionScore];
         const updatedScores = newScores.slice(-33);
@@ -257,72 +264,144 @@ const SessionPage = () => {
       });
     };
 
-    newSocket.onerror = (error) => {
-      console.error('WebSocket error: ', error);
-    };
-
-    newSocket.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
+    newSocket.onerror = (error) => console.error('WebSocket error: ', error);
+    newSocket.onclose = () => console.log('WebSocket connection closed');
   };
 
   return (
-    <div className="create-ses-page">
+    <div className="create-ses-page" style={{ position: 'relative' }}>
+      <div style={{ 
+        position: 'fixed',
+        top: '30px',
+        left: '40px',
+        zIndex: 10
+      }}>
+        <button onClick={handleBack} className="start-session-button">
+          Back
+        </button>
+      </div>
+
       <div className="text-content">
-        <h1>New Session</h1>
-        {!isConfirmed || sessionEnded ? (
+        {!isConfirmed ? (
           <>
+            <h1>New Session</h1>
             <p>Click start when you're ready to commence your session.</p>
             <button onClick={handleConfirmStart} className="start-session-button">
               Start Session
             </button>
-            <button onClick={handleBack} className="start-session-button" style={{ margin: 20 }}>
-              Back
-            </button>
           </>
         ) : (
-          <div style={{ width: '100%', maxWidth: '960px', margin: '0 auto' }}>
-            <div className="graph-container">
-              <h1>Real-Time Attention Score</h1>
-              {isLoading ? (
-                <div className="loading-container">
-                  <div className="loading-spinner"></div>
-                  <p>Initializing session...</p>
+          <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+            <h1>{Array.isArray(summaries) && summaries.length > 0 ? 'Session Summary' : 'Real-Time Attention Score'}</h1>
+            
+            <div className="graph-container" style={{ padding: '20px' }}>
+              <div className="average-score" style={{ textAlign: 'center', marginBottom: '10px' }}>
+                <h2>Average Attention Score: {movingAverage || 0}</h2>
+              </div>
+              
+              <div style={{ 
+                width: '600px',
+                height: '300px',
+                position: 'relative',
+                margin: '0 auto'
+              }}>
+                {isLoading ? (
+                  <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p>Initializing session...</p>
+                  </div>
+                ) : (
+                  <Line 
+                    data={chartData}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                        y: {
+                          beginAtZero: true,
+                          max: 100,
+                          grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                          }
+                        },
+                        x: {
+                          grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                          }
+                        }
+                      },
+                      plugins: {
+                        legend: {
+                          labels: {
+                            color: 'rgba(255, 255, 255, 0.7)'
+                          }
+                        }
+                      }
+                    }}
+                  />
+                )}
+                {!sessionEnded && !processingStatus && (
+                  <div style={{ 
+                    textAlign: 'center',
+                    marginTop: '20px'
+                  }}>
+                    <button
+                      onClick={() => {
+                        handleStopSession();
+                        setProcessingStatus('Stopping recording...');
+                      }}
+                      className="start-session-button"
+                      style={{ backgroundColor: '#dc2626' }}
+                    >
+                      Stop Session
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+              {processingStatus ? (
+                <div className="summary-card" style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '200px',
+                  width: '100%',
+                  marginTop: '20px',
+                  textAlign: 'center',
+                  marginLeft: 'auto',
+                  marginRight: 'auto'
+                }}>
+                  <div className="loading-spinner" style={{ marginBottom: '20px' }}></div>
+                  <p style={{ fontSize: '1.5em' }}>{processingStatus}</p>
                 </div>
               ) : (
                 <>
-                  <div className="average-score">
-                    <h2>Average Attention Score: {movingAverage || 0}</h2>
-                  </div>
-                  <Line data={chartData} width={960} height={400} />
+                  {Array.isArray(summaries) && summaries.length > 0 && (
+                    <div className="summaries-container" style={{ width: '100%' }}>
+                      {summaries.map((summary, index) => (
+                        <div key={index} className="summary-card">
+                          <h2>Session Insights</h2>
+                          <p>{summary || 'No summary available'}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </>
               )}
+
+              {sessionEnded && (
+                <button 
+                  onClick={handleConfirmStart} 
+                  className="start-session-button"
+                  style={{ marginTop: '2rem' }}
+                >
+                  Start Another Session
+                </button>
+              )}
             </div>
-            <button
-              onClick={handleStopSession}
-              className="start-session-button"
-              style={{ backgroundColor: '#dc2626', marginBottom: '2rem' }}
-            >
-              Stop Session
-            </button>
-          </div>
-        )}
-
-        {processingStatus && (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-            <p>{processingStatus}</p>
-          </div>
-        )}
-
-        {Array.isArray(summaries) && summaries.length > 0 && (
-          <div className="summaries-container">
-            <h2>Session Insights</h2>
-            {summaries.map((summary, index) => (
-              <div key={index} className="summary-card">
-                <p>{summary || 'No summary available'}</p>
-              </div>
-            ))}
           </div>
         )}
       </div>
