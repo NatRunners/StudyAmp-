@@ -1,13 +1,14 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import { motion } from "framer-motion"; // Import motion from Framer Motion
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
-import "./App.css";
 import CreateSes from "./components/CreateSes";
+import SessionPage from "./components/SessionPage";
 import ViewSes from "./components/ViewSes";
 import VisualizeFocus from "./components/VisualizeFocus";
+import "./App.css";
 
 // Define the dark theme inline
 const darkTheme = createTheme({
@@ -27,35 +28,19 @@ const darkTheme = createTheme({
   },
 });
 
-// Animation settings for fade-in effect
-const fadeInSettings = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  transition: { duration: 0.7 },
-};
-
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Navigation />
-      <motion.div {...fadeInSettings}>
-        <section id="landing">
-          <LandingPage />
-        </section>
-
-        <section id="create">
-          <CreateSes />
-        </section>
-
-        <section id="view">
-          <ViewSes />
-        </section>
-
-        <section id="visualize">
-          <VisualizeFocus />
-        </section>
-      </motion.div>
+      <Router>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/create" element={<SessionPage />} />
+          <Route path="/view" element={<ViewSes />} />
+          <Route path="/visualize" element={<VisualizeFocus />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 }
