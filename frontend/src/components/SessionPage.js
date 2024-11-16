@@ -40,13 +40,14 @@ import {
     const [session, setSession] = useState(null);
     const [socket, setSocket] = useState(null);
     const [isConfirmed, setIsConfirmed] = useState(false);
-    const [sessionEnded, setSessionEnded] = useState(false); // Track if session has ended
+    const [sessionEnded, setSessionEnded] = useState(false);
     const navigate = useNavigate();
     const apiUrl = process.env.REACT_APP_API_URL;
   
     const handleConfirmStart = () => {
       handleStartSession();
       setIsConfirmed(true);
+      setSessionEnded(false);
     };
   
     const handleBack = () => {
@@ -57,6 +58,19 @@ import {
     };
   
     const handleStartSession = () => {
+      setChartData({
+        labels: [],
+        datasets: [
+          {
+            label: 'Attention Score',
+            data: [],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
+          },
+        ],
+      });
+  
       const requestOptions = {
         method: 'POST',
         redirect: 'follow',
@@ -133,6 +147,24 @@ import {
           })
           .catch((error) => console.error(error));
       }
+    };
+  
+    const handleRestartSession = () => {
+      setChartData({
+        labels: [],
+        datasets: [
+          {
+            label: 'Attention Score',
+            data: [],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
+          },
+        ],
+      });
+  
+      setSessionEnded(false);
+      handleStartSession();
     };
   
     return (
