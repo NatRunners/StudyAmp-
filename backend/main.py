@@ -4,10 +4,20 @@ from device_manager import DeviceManager
 from signal_processor import SignalProcessor
 from session_manager import SessionManager
 from datetime import datetime, timezone
+from starlette.middleware.cors import CORSMiddleware
 import asyncio
 import logging
 
 app = FastAPI()
+
+# security stuff
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Allows only your React app's origin
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Initialize managers
 # device_manager = DeviceManager()
