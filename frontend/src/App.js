@@ -1,15 +1,16 @@
-import React from "react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import { motion } from "framer-motion"; // Import motion from Framer Motion
-import Navigation from "./components/Navigation";
-import LandingPage from "./components/LandingPage";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { motion } from "framer-motion";
+import React from "react";
+import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import CreateSes from "./components/CreateSes";
+import LandingPage from "./components/LandingPage";
+import Navigation from "./components/Navigation";
+import SessionPage from "./components/SessionPage";
 import ViewSes from "./components/ViewSes";
 import VisualizeFocus from "./components/VisualizeFocus";
 
-// Define the dark theme inline
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -27,36 +28,56 @@ const darkTheme = createTheme({
   },
 });
 
-// Animation settings for fade-in effect
 const fadeInSettings = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   transition: { duration: 0.7 },
 };
 
+function AppContent() {
+  const location = useLocation();
+  const showNavigation = location.pathname !== '/session';
+
+  return (
+    <>
+      {showNavigation && <Navigation />}
+      <Routes>
+        <Route
+          path="/session"
+          element={<SessionPage />}
+        />
+        <Route
+          path="/"
+          element={
+            <motion.div {...fadeInSettings}>
+              <section id="landing">
+                <LandingPage />
+              </section>
+              <section id="create">
+                <CreateSes />
+              </section>
+              <section id="view">
+                <ViewSes />
+              </section>
+              <section id="visualize">
+                <VisualizeFocus />
+              </section>
+            </motion.div>
+          }
+        />
+      </Routes>
+    </>
+  );
+}
+
 function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <Navigation />
-      <motion.div {...fadeInSettings}>
-        <section id="landing">
-          <LandingPage />
-        </section>
-
-        <section id="create">
-          <CreateSes />
-        </section>
-
-        <section id="view">
-          <ViewSes />
-        </section>
-
-        <section id="visualize">
-          <VisualizeFocus />
-        </section>
-      </motion.div>
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <AppContent />
+      </ThemeProvider>
+    </Router>
   );
 }
 
