@@ -1,133 +1,32 @@
-from langchain.prompts import PromptTemplate
-from langchain.output_parsers import OutputFixingParser, PydanticOutputParser
-from llm import LLMModels
-from .parsers import RagbotAnalysis, LectureSummary, FocusAnalysis, EngagementMetrics
-from .prompt import ragbot_summary_prompt, engagement_metrics_prompt, focus_analysis_prompt, lecture_summary_prompt, improvement_suggestions_prompt
-import json
-from typing import List, Dict
-import re
+from llm import LLM
+from ragbot.parsers import parse_focus_data, parse_transcript
+from typing import Dict
 
+class RAGBotAgent:
+    def __init__(self, api_key: str):
+        self.llm = LLM(api_key)
 
-class RagbotSummaryPrompt(PromptTemplate):
-    def __init__(self, data: Dict):
-        self.data = data
-        self.llm = LLMModels.get_openai_model()
-        self.prompt = ragbot_summary_prompt
-
-    def get_prompt(self):
-        return self.prompt.format(**self.data)
-    
-    def get_response(self, response: str):
-        return self.llm.get_response(self.get_prompt(), response)
-    
-    def parse_response(self, response: str):
-        return PydanticOutputParser(RagbotAnalysis).parse(response)
-    
-
-class EngagementMetricsPrompt(PromptTemplate):
-    def __init__(self, data: Dict):
-        self.data = data
-        self.llm = LLMModels.get_openai_model()
-        self.prompt = engagement_metrics_prompt
-
-    def get_prompt(self):
-        return self.prompt.format(**self.data)
-    
-    def get_response(self, response: str):
-        return self.llm.get_response(self.get_prompt(), response)
-    
-    def parse_response(self, response: str):
-        return PydanticOutputParser(EngagementMetrics).parse(response)
-    
-
-class FocusAnalysisPrompt(PromptTemplate):
-    def __init__(self, data: Dict):
-        self.data = data
-        self.llm = LLMModels.get_openai_model()
-        self.prompt = focus_analysis_prompt
-
-    def get_prompt(self):
-        return self.prompt.format(**self.data)
-    
-    def get_response(self, response: str):
-        return self.llm.get_response(self.get_prompt(), response)
-    
-    def parse_response(self, response: str):
-        return PydanticOutputParser(FocusAnalysis).parse(response)
-    
-
-class LectureSummaryPrompt(PromptTemplate):
-    def __init__(self, data: Dict):
-        self.data = data
-        self.llm = LLMModels.get_openai_model()
-        self.prompt = lecture_summary_prompt
-
-    def get_prompt(self):
-        return self.prompt.format(**self.data)
-    
-    def get_response(self, response: str):
-        return self.llm.get_response(self.get_prompt(), response)
-    
-    def parse_response(self, response: str):
-        return PydanticOutputParser(LectureSummary).parse(response)
-    
-
-class ImprovementSuggestionsPrompt(PromptTemplate):
-    def __init__(self, data: Dict):
-        self.data = data
-        self.llm = LLMModels.get_openai_model()
-        self.prompt = improvement_suggestions_prompt
-
-    def get_prompt(self):
-        return self.prompt.format(**self.data)
-    
-    def get_response(self, response: str):
-        return self.llm.get_response(self.get_prompt(), response)
-    
-    def parse_response(self, response: str):
-        return OutputFixingParser().parse(response)
-    
-
-def get_ragbot_summary(data: Dict) -> RagbotAnalysis:
-    prompt = RagbotSummaryPrompt(data)
-    response = prompt.get_response("")
-    return prompt.parse_response(response)
-
-
-def get_engagement_metrics(data: Dict) -> EngagementMetrics:
-    prompt = EngagementMetricsPrompt(data)
-    response = prompt.get_response("")
-    return prompt.parse_response(response)
-
-
-def get_focus_analysis(data: Dict) -> FocusAnalysis:
-    prompt = FocusAnalysisPrompt(data)
-    response = prompt.get_response("")
-    return prompt.parse_response(response)
-
-
-def get_lecture_summary(data: Dict) -> LectureSummary:
-    prompt = LectureSummaryPrompt(data)
-    response = prompt.get_response("")
-    return prompt.parse_response(response)
-
-
-def get_improvement_suggestions(data: Dict) -> List[str]:
-    prompt = ImprovementSuggestionsPrompt(data)
-    response = prompt.get_response("")
-    return prompt.parse_response(response)
-
-
-def get_ragbot_analysis(data: Dict) -> RagbotAnalysis:
-    ragbot_summary = get_ragbot_summary(data)
-    engagement_metrics = get_engagement_metrics(data)
-    focus_analysis = get_focus_analysis(data)
-    lecture_summary = get_lecture_summary(data)
-    improvement_suggestions = get_improvement_suggestions(data)
-    return RagbotAnalysis(lecture_summary=lecture_summary, focus_analysis=focus_analysis, engagement_metrics=engagement_metrics, improvement_suggestions=improvement_suggestions)
-
-
-def get_ragbot_analysis_json(data: Dict) -> str:
-    ragbot_analysis = get_ragbot_analysis(data)
-    return ragbot_analysis.json()
-
+    def process_audio_and_focus(self, audio_path: str, focus_data: Dict) -> str:
+        """
+        Main entry point for processing audio and focus data.
+        """
+        # Step 1: Transcribe audio
+        transcript = self.llm.transcribe_audio(audio_path)
+        
+        # Step 2: Parse transcript
+        parsed_transcript = parse_transcript(transcript)
+        
+        # Step 3: Parse focus data
+        parsed_focus_data = parse_focus_data(focus_data)
+        
+        # Step 4: Generate summaries for the transcript in chunks
+        summaries = self.llm.generate_summaries(parsed_transcript)
+        combined_summary = " ".join(summaries)  # Combine into paragraphs
+        
+        # Step 5: Generate focus insights
+        focus_insights = self.llm.generate_focus_insights(parsed_focus_data)
+        
+        # Step 6: Combine all outputs
+        final_output = f"{combined_summary}\n\nFocus Insights:\n\n{focus_insights}"
+        
+        return final_output
