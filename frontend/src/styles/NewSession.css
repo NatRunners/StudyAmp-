@@ -60,3 +60,51 @@
         font-size: 1.1em;
     }
 }
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3a8dff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+    color: #ffffff;
+    font-size: 1.2em;
+}
+
+.summaries-container {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.summary-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.summary-card p {
+    margin: 0;
+    line-height: 1.5;
+    color: #ffffff;
+}

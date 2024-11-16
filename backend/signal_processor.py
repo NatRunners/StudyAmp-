@@ -1,13 +1,19 @@
 import numpy as np
-from scipy.signal import butter, lfilter, welch
+from scipy.signal import butter, filtfilt, welch, lfilter
 from enum import Enum
+import warnings
+
+# Suppress specific warnings
+warnings.filterwarnings("ignore", message="nperseg = 256 is greater than input length")
+warnings.filterwarnings("ignore", message="Mean of empty slice.")
+warnings.filterwarnings("ignore", message="invalid value encountered in scalar divide")
 
 class Band(Enum):
     Delta = (0.5, 4)
     Theta = (4, 8) 
     Alpha = (8, 13)
     Beta = (13, 30)
-    Gamma = (30, 50)
+    Gamma = (30, 100)
 
 class SignalProcessor:
     def __init__(self):
@@ -20,18 +26,28 @@ class SignalProcessor:
         self.channels = ['TP9', 'AF7', 'AF8', 'TP10']
 
     def detect_motion_artifacts(self, acc_data, gyro_data):
+        # Convert lists to NumPy arrays
+        acc_data = np.array(acc_data)
+        gyro_data = np.array(gyro_data)
+
+        # Handle empty data cases
+        if acc_data.size == 0 or gyro_data.size == 0:
+            return 0.0  # Return a default motion score if data is empty
+
         # Detect excessive head movement
         acc_threshold = 1.5  # g
         gyro_threshold = 50  # degrees/s
-        
-        acc_magnitude = np.sqrt(np.sum(acc_data**2, axis=0))
-        gyro_magnitude = np.sqrt(np.sum(gyro_data**2, axis=0))
-        
+
+        # Calculate the magnitude of the accelerometer and gyroscope data
+        acc_magnitude = np.sqrt(np.sum(acc_data**2, axis=1))
+        gyro_magnitude = np.sqrt(np.sum(gyro_data**2, axis=1))
+
+        # Calculate motion score
         motion_score = 1.0 - min(1.0, (
             np.mean(acc_magnitude) / acc_threshold + 
             np.mean(gyro_magnitude) / gyro_threshold
         ) / 2)
-        
+
         return motion_score
 
     def calculate_hrv_features(self, ppg_data):
@@ -143,7 +159,7 @@ class SignalProcessor:
         # Calculate EEG-based attention score
         attention_score = self.calculate_attention(eeg_data)
         
-        # Calculate motion artifact score
+         # Detect motion artifacts
         motion_score = self.detect_motion_artifacts(acc_data, gyro_data)
         
         # Calculate HRV-based focus score
@@ -162,3 +178,127 @@ class SignalProcessor:
             'motion_score': motion_score * 100,
             'hrv_score': hrv_score * 100,
         }
+    
+    def calculate_focus_score(self, eeg_data, sampling_rate=256):
+        """
+        Calculate focus score from EEG data
+        Parameters:
+            eeg_data: numpy array of shape (channels, samples)
+            sampling_rate: int, sampling frequency in Hz
+        Returns:
+            focus_score: float between 0 and 100
+        """
+        # Define frequency bands
+        THETA = (4, 8)
+        ALPHA = (8, 12)
+        SMR = (12, 15)    # Sensorimotor rhythm
+        MID_BETA = (15, 20)
+        BETA = (12, 30)
+        
+        def get_band_power(data, band, sampling_rate):
+            """Calculate power in specific frequency band using welch method"""
+            f, psd = welch(data, fs=sampling_rate, nperseg=sampling_rate)
+            idx = np.logical_and(f >= band[0], f <= band[1])
+            return np.mean(psd[idx])
+
+        # Calculate band powers for each channel
+        channel_scores = []
+        for channel_data in eeg_data:
+            # Get band powers
+            theta_power = get_band_power(channel_data, THETA, sampling_rate)
+            alpha_power = get_band_power(channel_data, ALPHA, sampling_rate)
+            smr_power = get_band_power(channel_data, SMR, sampling_rate)
+            mid_beta_power = get_band_power(channel_data, MID_BETA, sampling_rate)
+            beta_power = get_band_power(channel_data, BETA, sampling_rate)
+            
+            # Calculate component ratios
+            beta_theta_ratio = beta_power / theta_power
+            smr_midbeta_theta_ratio = (smr_power + mid_beta_power) / theta_power
+            alpha_beta_ratio = alpha_power / beta_power
+            
+            # Combine ratios with empirically determined weights
+            channel_score = (
+                0.4 * beta_theta_ratio +
+                0.4 * smr_midbeta_theta_ratio +
+                -0.2 * alpha_beta_ratio  # Inverse relationship
+            )
+            
+            channel_scores.append(channel_score)
+        
+        # Normalize to 0-100 scale
+        final_score = np.mean(channel_scores)
+        normalized_score = 100 * (final_score - 2) / 24  # Assuming typical range 2-26
+        
+        return np.clip(normalized_score, 0, 100)
+    
+    def calculate_concentration_score(self, eeg_data, sampling_rate=256):
+        """
+        Calculate concentration score using Beta/Theta ratio for frontal channels.
+        Parameters:
+            eeg_data: numpy array of shape (channels, samples)
+            sampling_rate: int, sampling frequency in Hz
+        Returns:
+            concentration_score: float between 0 and 100
+        """
+        # Define frequency bands
+        THETA_BAND = (4, 8)
+        BETA_BAND = (12, 30)
+
+        def get_band_power(data, band):
+            f, psd = welch(data, fs=sampling_rate, nperseg=min(len(data), sampling_rate))
+            idx = np.logical_and(f >= band[0], f <= band[1])
+            return np.mean(psd[idx]) if np.any(idx) else 0.0
+
+        # Focus on frontal channels (e.g., channels 0 and 1)
+        frontal_channels = eeg_data[:2]
+        ratios = []
+        for channel_data in frontal_channels:
+            theta_power = get_band_power(channel_data, THETA_BAND)
+            beta_power = get_band_power(channel_data, BETA_BAND)
+            # Avoid division by zero
+            ratio = beta_power / theta_power if theta_power != 0 else 0.0
+            ratios.append(ratio)
+
+        # Average the ratios
+        average_ratio = np.mean(ratios)
+
+        # Normalize the score based on expected ratio range (e.g., 1.8 to 2.4)
+        normalized_score = (average_ratio - 1.8) / 0.6
+        concentration_score = np.clip(normalized_score, 0, 1)
+        return float(concentration_score)
+
+    def calculate_immersion_score(self, eeg_data, sampling_rate=256):
+        """
+        Calculate immersion score using Theta/Alpha ratio for occipital channels.
+        Parameters:
+            eeg_data: numpy array of shape (channels, samples)
+            sampling_rate: int, sampling frequency in Hz
+        Returns:
+            immersion_score: float between 0 and 100
+        """
+        # Define frequency bands
+        THETA_BAND = (4, 8)
+        ALPHA_BAND = (8, 12)
+
+        def get_band_power(data, band):
+            f, psd = welch(data, fs=sampling_rate, nperseg=min(len(data), sampling_rate))
+            idx = np.logical_and(f >= band[0], f <= band[1])
+            return np.mean(psd[idx]) if np.any(idx) else 0.0
+
+        # Focus on occipital channels (e.g., last two channels)
+        occipital_channels = eeg_data[-2:]
+        ratios = []
+        for channel_data in occipital_channels:
+            theta_power = get_band_power(channel_data, THETA_BAND)
+            alpha_power = get_band_power(channel_data, ALPHA_BAND)
+            # Avoid division by zero
+            ratio = theta_power / alpha_power if alpha_power != 0 else 0.0
+            ratios.append(ratio)
+
+        # Average the ratios
+        average_ratio = np.mean(ratios)
+
+        # Normalize the score based on expected ratio range (e.g., 0.6 to 1.0)
+        normalized_score = 100 * (average_ratio - 0.1) / 9.9
+        immersion_score = np.clip(normalized_score, 0, 100)
+        return float(immersion_score)
