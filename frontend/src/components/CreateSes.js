@@ -12,9 +12,40 @@ const CreateSes = () => {
     
     fetch(`${apiUrl}/sessions`, requestOptions)
       .then((response) => response.text())
-      .then((result) => console.log(result))
+      .then((result) => {
+        result = JSON.parse(result);
+        console.log(result);
+        startWebSocketConnection(result);
+      })
       .catch((error) => console.error(error));
     console.log('Session Started');
+  };
+
+  // WebSocket connection function using session data
+  const startWebSocketConnection = (session) => {
+    // Assuming session contains necessary data to connect
+    const wsUrl = process.env.REACT_APP_WS_URL;
+    console.log(wsUrl);
+
+    const socket = new WebSocket(`${wsUrl}/${session.session_id}`);
+
+    socket.onopen = () => {
+      console.log('WebSocket connection established');
+      // You can send messages or listen for events after connection
+      socket.send(JSON.stringify({ message: 'Session started', sessionId: session.session_id }));
+    };
+
+    socket.onmessage = (event) => {
+      console.log('Message from server: ', event.data);
+    };
+
+    socket.onerror = (error) => {
+      console.error('WebSocket error: ', error);
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
   };
 
   return (
