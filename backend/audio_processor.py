@@ -14,6 +14,10 @@ import magic
 import uuid
 from dotenv import load_dotenv
 import asyncio
+# from parser import AudioParser
+from prompt import PromptGenerator
+
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -58,6 +62,7 @@ class AudioProcessor:
         try:
             timestamps = json.loads(timestamps_json)
             logger.info(f"Processing {len(timestamps)} low attention periods")
+
             
             # Save and validate input file
             input_filename, input_path = self._create_temp_file('.webm')
@@ -145,16 +150,16 @@ class AudioProcessor:
             logger.error(f"Processing error: {str(e)}")
             raise HTTPException(status_code=500, detail=str(e))
         
-        finally:
-            # Cleanup temporary files
-            for temp_file in temp_files:
-                try:
-                    if os.path.exists(temp_file):
-                        os.chmod(temp_file, 0o666)  # Ensure we have permission to delete
-                        os.unlink(temp_file)
-                        logger.info(f"Cleaned up: {temp_file}")
-                except Exception as e:
-                    logger.warning(f"Failed to cleanup {temp_file}: {e}")
+        # finally:
+        #     # Cleanup temporary files
+        #     for temp_file in temp_files:
+        #         try:
+        #             if os.path.exists(temp_file):
+        #                 os.chmod(temp_file, 0o666)  # Ensure we have permission to delete
+        #                 os.unlink(temp_file)
+        #                 logger.info(f"Cleaned up: {temp_file}")
+        #         except Exception as e:
+        #             logger.warning(f"Failed to cleanup {temp_file}: {e}")
 
     def _extract_segments(self, audio: AudioSegment, timestamps: List[Dict]) -> List[AudioSegment]:
         segments = []
@@ -182,6 +187,7 @@ class AudioProcessor:
 
     async def _get_summaries(self, segments: List[AudioSegment]) -> List[str]:
         summaries = []
+        
         for i, segment in enumerate(segments):
             try:
                 logger.info(f"Processing segment {i+1}/{len(segments)}")
@@ -200,19 +206,64 @@ class AudioProcessor:
                         raise ValueError(f"Exported segment {i+1} is empty")
 
                     logger.info(f"Uploading segment {i+1} to Gemini")
+
+                    # print(filepath)
+                    filepath = "./harvard.wav"
                     audio_file = genai.upload_file(filepath)
+
+
+
+                    prompt = PromptGenerator.generate_summary_prompt()
                     
                     logger.info(f"Getting analysis for segment {i+1}")
                     try:
                         response = self.model.generate_content([
                             audio_file,
-                            "Summarize this audio segment from a focused study session. "
-                            "Provide insights on the content discussed and filter out any noticeable distractions or background noises. "
-                            "This will help the user understand content they may have missed due to low attention."
+                            prompt
+                            # "Summarize this audio segment from a focused study session. "
+                            # "Provide insights on the content discussed and filter out any noticeable distractions or background noises. "
+                            # "This will help the user understand content they may have missed due to low attention."
                         ])
                         # Handle response directly
                         response.resolve()  # Ensure generation is complete
-                        summaries.append(response.text)
+                        # Extract text response
+                        raw_summary = response.text
+                        print("Raw Summary:", raw_summary)
+
+                        # strip everything until the first '{' character everything after the last '}' character
+
+                        raw_summary = raw_summary[raw_summary.find('{'):]
+                        raw_summary = raw_summary[:raw_summary.rfind('}')+1]
+                        print("Raw Summary:", raw_summary)
+
+                        # Parse the JSON string into a dictionary
+                        summary_data = json.loads(raw_summary)
+
+                        # Store in a hashmap
+                        hashmap = {
+                            'topic': summary_data['topic'],
+                            'summary': summary_data['summary'],
+                            'key_points': summary_data['key_points']
+                        }
+
+                        print("Hashmap:", hashmap)
+
+                        # Append the hashmap to summaries if needed
+                        summaries.append(hashmap)
+
+                        
+
+                       #parse the summary and store the string in a hash map
+                       #hashmap = {'topic': str, 'summary': str, 'key_points': list[str]}
+
+                        
+                    
+
+
+
+
+                        
+                        
                         logger.info(f"Successfully got analysis for segment {i+1}")
                     except Exception as e:
                         logger.error(f"Gemini API error: {str(e)}")
