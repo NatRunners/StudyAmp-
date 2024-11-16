@@ -7,21 +7,24 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const CreateSes = () => {
   const [chartData, setChartData] = useState({
-    labels: [], // Time stamps or data points
+    labels: [],
     datasets: [
       {
         label: 'Attention Score',
-        data: [], // Your real-time attention scores
+        data: [],
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1,
       },
     ],
   });
+  const [session, setSession] = useState(null);
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const [isSessionActive, setIsSessionActive] = useState(false); // Track session state
+  const [socket, setSocket] = useState(null); // Store WebSocket instance
 
   const handleStartSession = () => {
-    // Handle session start logic here
-    const apiUrl = process.env.REACT_APP_API_URL;
     const requestOptions = {
       method: "POST",
       redirect: "follow"
@@ -32,38 +35,54 @@ const CreateSes = () => {
       .then((result) => {
         result = JSON.parse(result);
         console.log(result);
+        setSession(result);
         startWebSocketConnection(result);
       })
       .catch((error) => console.error(error));
+    
+    setIsSessionActive(true); // Session has started
     console.log('Session Started');
   };
 
-  // WebSocket connection function using session data
+  const handleStopSession = () => {
+    if (socket) {
+      fetch(`${apiUrl}/sessions/${session.session_id}`, {method: 'DELETE'})
+        .then((response) => response.text())
+        .then((result) => {
+          console.log(result);
+          socket.close(); // Close the WebSocket connection
+          setIsSessionActive(false); // Session has stopped
+          setSocket(null); // Reset WebSocket instance
+          setSession(null);
+        })
+        .catch((error) => console.error(error));
+      console.log('Session Stopped');
+    }
+  };
+
   const startWebSocketConnection = (session) => {
     const wsUrl = process.env.REACT_APP_WS_URL;
     console.log(wsUrl);
 
-    const socket = new WebSocket(`${wsUrl}/${session.session_id}`);
+    const newSocket = new WebSocket(`${wsUrl}/${session.session_id}`);
+    setSocket(newSocket); // Store WebSocket instance for later use
 
-    socket.onopen = () => {
+    newSocket.onopen = () => {
       console.log('WebSocket connection established');
-      socket.send(JSON.stringify({ message: 'Session started', sessionId: session.session_id }));
+      newSocket.send(JSON.stringify({ message: 'Session started', sessionId: session.session_id }));
     };
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data); // Assuming the message contains an object with `attention_score`, `timestamp`, etc.
+    newSocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
       console.log('Message from server: ', data);
 
-      // Extract the attention_score and timestamp
       const attentionScore = data.attention_score;
-      const timestamp = new Date(data.timestamp * 1000).toLocaleTimeString(); // Convert to readable time
+      const timestamp = new Date(data.timestamp * 1000).toLocaleTimeString();
 
-      // Update chart with real-time data
       setChartData((prevData) => {
-        const newLabels = [...prevData.labels, timestamp]; // Add the formatted timestamp
-        const newData = [...prevData.datasets[0].data, attentionScore]; // Add the attention score
+        const newLabels = [...prevData.labels, timestamp];
+        const newData = [...prevData.datasets[0].data, attentionScore];
 
-        // Keep only the last 20 data points for smoother scrolling
         if (newLabels.length > 20) {
           newLabels.shift();
           newData.shift();
@@ -81,11 +100,11 @@ const CreateSes = () => {
       });
     };
 
-    socket.onerror = (error) => {
+    newSocket.onerror = (error) => {
       console.error('WebSocket error: ', error);
     };
 
-    socket.onclose = () => {
+    newSocket.onclose = () => {
       console.log('WebSocket connection closed');
     };
   };
@@ -99,9 +118,16 @@ const CreateSes = () => {
           your productivity. Each session is designed to help you achieve
           better concentration and track your progress.
         </p>
-        <button onClick={handleStartSession} className="start-session-button">
-          Start Session
-        </button>
+
+        {!isSessionActive ? (
+          <button onClick={handleStartSession} className="start-session-button">
+            Start Session
+          </button>
+        ) : (
+          <button onClick={handleStopSession} className="start-session-button">
+            Stop Session
+          </button>
+        )}
       </div>
 
       <div className="graph-container">
