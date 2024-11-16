@@ -77,6 +77,7 @@ const Navigation = () => {
           position: "fixed",
           backgroundColor: scrolled ? "rgba(0, 0, 0, 0.8)" : "transparent",
           color: "white",
+          transition: "background-color 0.3s",
         }}
       >
         <Toolbar>
@@ -89,7 +90,7 @@ const Navigation = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}>
             {navItems.map(([label, path]) => (
               <Button
                 key={path}

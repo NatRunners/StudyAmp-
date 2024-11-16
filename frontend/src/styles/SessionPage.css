@@ -25,3 +25,19 @@
     color: #ffffff;
     font-size: 1.2em;
 }
+
+@media (max-width: 768px) {
+    .loading-container {
+        height: 250px;
+    }
+
+    .loading-spinner {
+        width: 35px;
+        height: 35px;
+        border-width: 3px;
+    }
+
+    .loading-container p {
+        font-size: 0.9em;
+    }
+}
