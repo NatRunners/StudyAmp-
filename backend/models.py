@@ -9,6 +9,10 @@ class SessionData(BaseModel):
     user_id: str
     device_id: str
     status: str
+    average_attention: Optional[float] = None
+    attention_scores: List[float] = []  # Add this field
+    summaries: Optional[List[str]] = None
+    attention_drops: Optional[List[Dict]] = None
 
 class EEGData(BaseModel):
     timestamp: float
