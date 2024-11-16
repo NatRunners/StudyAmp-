@@ -11,7 +11,6 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import '../styles/ViewSes.css';
 import '../styles/Global.css';
 import '../styles/PastSession.css';
 

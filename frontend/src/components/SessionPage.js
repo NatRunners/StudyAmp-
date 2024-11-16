@@ -270,17 +270,6 @@ const SessionPage = () => {
 
   return (
     <div className="create-ses-page" style={{ position: 'relative' }}>
-      <div style={{ 
-        position: 'fixed',
-        top: '30px',
-        left: '40px',
-        zIndex: 10
-      }}>
-        <button onClick={handleBack} className="start-session-button">
-          Back
-        </button>
-      </div>
-
       <div className="text-content">
         {!isConfirmed ? (
           <>
