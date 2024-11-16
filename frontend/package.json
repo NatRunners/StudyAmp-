@@ -11,7 +11,9 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "chart.js": "^4.4.6",
+    "concurrently": "^9.1.0",
     "framer-motion": "^11.11.17",
+    "open": "^10.1.0",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
@@ -21,7 +23,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm install && react-scripts start",
+    "startb": "start http://localhost:5000/docs && cd ../backend && pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 5000 --reload ",
+    "both": "concurrently -n \"FRONTEND,BACKEND\" -c \"blue,green\" \"npm run start\" \"npm run startb\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
