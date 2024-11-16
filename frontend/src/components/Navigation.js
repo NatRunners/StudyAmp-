@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -16,10 +17,10 @@ const drawerWidth = 240;
 
 // Updated navigation items
 const navItems = [
-  ["Home", "landing"],
-  ["New Session", "create"],
-  ["Past Sessions", "view"],
-  ["Overview", "visualize"],
+  ["Home", "/"],
+  ["New Session", "/create"],
+  ["Past Sessions", "/view"],
+  ["Overview", "/visualize"],
 ];
 
 const Navigation = () => {
@@ -45,13 +46,6 @@ const Navigation = () => {
     };
   }, []);
 
-  const scrollToSection = (section) => {
-    const sectionElement = document.getElementById(section);
-    if (sectionElement) {
-      sectionElement.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <p className="mobile-menu-top">
@@ -59,11 +53,12 @@ const Navigation = () => {
       </p>
       <Divider />
       <List>
-        {navItems.map(([label, id]) => (
-          <ListItem key={id} disablePadding>
+        {navItems.map(([label, path]) => (
+          <ListItem key={path} disablePadding>
             <ListItemButton
               sx={{ textAlign: "center" }}
-              onClick={() => scrollToSection(id)}
+              component={Link}
+              to={path}
             >
               <ListItemText primary={label} />
             </ListItemButton>
@@ -95,16 +90,17 @@ const Navigation = () => {
             <MenuIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }}>
-            {navItems.map(([label, id]) => (
+            {navItems.map(([label, path]) => (
               <Button
-                key={id}
-                sx={{ 
-                  color: "#ffffff", 
-                  textTransform: "none", 
+                key={path}
+                sx={{
+                  color: "#ffffff",
+                  textTransform: "none",
                   fontSize: "1.25rem",
-                  padding: "10px 12px"
+                  padding: "10px 12px",
                 }}
-                onClick={() => scrollToSection(id)}
+                component={Link}
+                to={path}
               >
                 {label}
               </Button>
