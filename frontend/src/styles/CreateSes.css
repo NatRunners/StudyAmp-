@@ -1,6 +1,7 @@
 /* Full-page background with gradient overlay */
 .create-ses-page {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -37,6 +38,7 @@
 /* Start session button with glow effect */
 .start-session-button {
     padding: 14px 28px;
+    margin-bottom: 20px;
     font-size: 1.2em;
     font-weight: bold;
     color: #ffffff;
@@ -55,6 +57,20 @@
 
 .start-session-button:active {
     transform: scale(0.98);
+}
+
+.graph-container h1{
+    font-size: 2em;
+    padding: 0;
+    margin: 20px;
+}
+.graph-container {
+    justify-content: center;
+    height: auto;
+    width: auto;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Responsive Design */
