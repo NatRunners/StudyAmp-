@@ -11,8 +11,8 @@ api_key = os.getenv("OPENAI_API_KEY")
 agent = RAGBotAgent(api_key)
 
 # Audio file path and focus data
-audio_path = "audio/lecture_audio.mp3"
-# audio_path = "audio/harvard.wav"
+# audio_path = "audio/lecture_audio.mp3"
+audio_path = "audio/harvard.wav"
 focus_data = {
     "0-5 mins": 80,
     "5-10 mins": 65,
