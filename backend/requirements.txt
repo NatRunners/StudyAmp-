@@ -7,12 +7,8 @@ pydantic>=2.4.2
 rich>=13.6.0
 python-dateutil>=2.8.2
 typing-extensions>=4.8.0
-
-langchain>=0.1.0
-streamlit>=1.1.0
-faiss-cpu>=1.7.0
-streamlit-extras>=0.1.0
-dotenv
-openai
-
-
+google-generativeai
+pydub
+python-magic>=0.4.27
+python-dotenv>=1.0.0
+requests>=2.31.0
