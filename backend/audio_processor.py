@@ -11,6 +11,7 @@ import logging
 import time
 import shutil
 from winmagic import magic
+import magic
 import uuid
 from dotenv import load_dotenv
 import asyncio
