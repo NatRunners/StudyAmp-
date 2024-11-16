@@ -19,13 +19,23 @@ const CreateSes = () => {
       },
     ],
   });
+  const [movingAverage, setMovingAverage] = useState(0);
+  const [attentionScores, setAttentionScores] = useState([]);
   const [session, setSession] = useState(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const [isSessionActive, setIsSessionActive] = useState(false); // Track session state
   const [socket, setSocket] = useState(null); // Store WebSocket instance
+  const [isLoading, setIsLoading] = useState(false);
+
+  const calculateMovingAverage = (scores) => {
+    if (scores.length === 0) return 0;
+    const sum = scores.reduce((acc, curr) => acc + curr, 0);
+    return (sum / scores.length).toFixed(2);
+  };
 
   const handleStartSession = () => {
+    setIsLoading(true);
     const requestOptions = {
       method: "POST",
       redirect: "follow"
@@ -48,6 +58,8 @@ const CreateSes = () => {
   const handleStopSession = () => {
     if (socket) {
       setIsSessionActive(false); 
+      setMovingAverage(0);
+      setAttentionScores([]);
   
       fetch(`${apiUrl}/sessions/${session.session_id}`, { method: 'DELETE' })
         .then((response) => response.text())
@@ -76,10 +88,20 @@ const CreateSes = () => {
 
     newSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      setIsLoading(false); // Stop loading when first data arrives
       console.log('Message from server: ', data);
 
       const attentionScore = data.attention_score;
       const timestamp = new Date(data.timestamp * 1000).toLocaleTimeString();
+
+      // Update attention scores array for moving average
+      setAttentionScores(prev => {
+        const newScores = [...prev, attentionScore];
+        // Keep only last 33 scores (approximately 8.25 seconds at 4 readings per second)
+        const updatedScores = newScores.slice(-33);
+        setMovingAverage(calculateMovingAverage(updatedScores));
+        return updatedScores;
+      });
 
       setChartData((prevData) => {
         const newLabels = [...prevData.labels, timestamp];
@@ -134,7 +156,19 @@ const CreateSes = () => {
       {isSessionActive && (
         <div className="graph-container">
           <h1>Real-Time Attention Score</h1>
-          <Line data={chartData} width={960} height={400}/>
+          {isLoading ? (
+            <div className="loading-container">
+              <div className="loading-spinner"></div>
+              <p>Initializing session...</p>
+            </div>
+          ) : (
+            <>
+              <div className="average-score">
+                <h2>Average Attention Score: {movingAverage}</h2>
+              </div>
+              <Line data={chartData} width={960} height={400}/>
+            </>
+          )}
         </div>
       )}
     </div>
