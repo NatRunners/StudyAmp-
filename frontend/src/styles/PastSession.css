@@ -11,22 +11,30 @@
     text-align: center;
 }
 
-/* Session list container */
-.session-list {
+/* Scrollable session list container */
+.scrollable-session-list {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-    max-width: 800px;
+    flex-wrap: wrap;
+    max-height: 480px;
+    overflow-y: auto;
     margin: 0 auto;
+    padding: 15 px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.3); 
+    max-width: 70%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
+
 
 /* Session card styling */
 .session-card {
-    width: 100%;
-    padding: 20px;
+    flex: 1 1 calc(50% - 30px); 
+    max-width: calc(50% - 30px); 
+    margin: 15px; 
+    padding: 0px 15px;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: #f0f0f0;
     text-align: left;
@@ -34,19 +42,21 @@
     transition: all 0.3s ease;
 }
 
+
 .session-card:hover {
     background-color: rgba(255, 255, 255, 0.15);
 }
 
 .session-card h2 {
     font-size: 1.8em;
-    margin-bottom: 10px;
+    margin: 10px;
+    padding: 10px 0;
     color: #ffffff;
 }
 
 .session-card p {
     font-size: 1.1em;
-    margin: 5px 0;
+    margin: 10px;
 }
 
 .session-card strong {
@@ -75,10 +85,33 @@
     color: #888;
 }
 
+/* Scrollbar styling */
+.scrollable-session-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollable-session-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.scrollable-session-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+}
+
+.scrollable-session-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .view-sessions-page h1 {
         font-size: 2em;
+    }
+
+    .scrollable-session-list {
+        max-width: 90%;
     }
 
     .session-card h2 {

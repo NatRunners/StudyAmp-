@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom";
 import "./App.css";
-import CreateSes from "./components/CreateSes";
-import LandingPage from "./components/LandingPage";
+import Home from "./components/Home";
 import Navigation from "./components/Navigation";
+import NewSession from "./components/NewSession";
+import Overview from "./components/Overview";
+import PastSession from "./components/PastSession";
 import SessionPage from "./components/SessionPage";
-import ViewSes from "./components/ViewSes";
-import VisualizeFocus from "./components/VisualizeFocus";
 
 const darkTheme = createTheme({
   palette: {
@@ -51,16 +51,16 @@ function AppContent() {
           element={
             <motion.div {...fadeInSettings}>
               <section id="landing">
-                <LandingPage />
+                <Home />
               </section>
               <section id="create">
-                <CreateSes />
+                <NewSession />
               </section>
               <section id="view">
-                <ViewSes />
+                <PastSession />
               </section>
               <section id="visualize">
-                <VisualizeFocus />
+                <Overview />
               </section>
             </motion.div>
           }

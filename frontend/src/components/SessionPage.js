@@ -1,18 +1,18 @@
 import {
-    CategoryScale,
-    Chart as ChartJS,
-    Legend,
-    LinearScale,
-    LineElement,
-    PointElement,
-    Title,
-    Tooltip,
-  } from 'chart.js';
-  import React, { useState } from 'react';
-  import { Line } from 'react-chartjs-2';
-  import { useNavigate } from 'react-router-dom';
-  import '../styles/CreateSes.css';
-  import '../styles/Global.css';
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+} from 'chart.js';
+import React, { useState } from 'react';
+import { Line } from 'react-chartjs-2';
+import { useNavigate } from 'react-router-dom';
+import '../styles/Global.css';
+import '../styles/NewSession.css';
   
   ChartJS.register(
     CategoryScale,
@@ -147,24 +147,6 @@ import {
           })
           .catch((error) => console.error(error));
       }
-    };
-  
-    const handleRestartSession = () => {
-      setChartData({
-        labels: [],
-        datasets: [
-          {
-            label: 'Attention Score',
-            data: [],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1,
-          },
-        ],
-      });
-  
-      setSessionEnded(false);
-      handleStartSession();
     };
   
     return (

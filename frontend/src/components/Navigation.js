@@ -82,6 +82,8 @@ const Navigation = () => {
           position: "fixed",
           backgroundColor: scrolled ? "rgba(0, 0, 0, 0.8)" : "transparent",
           color: "white",
+          height: "10%",             
+          justifyContent: "center"
         }}
       >
         <Toolbar>
@@ -94,15 +96,17 @@ const Navigation = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1}}>
             {navItems.map(([label, id]) => (
               <Button
                 key={id}
                 sx={{ 
                   color: "#ffffff", 
                   textTransform: "none", 
-                  fontSize: "1.25rem",
-                  padding: "10px 12px"
+                  fontSize: "1.5rem",
+                  padding: "12px 26px",
+                  fontWeight: 'bold',
+                  boxShadow: "none"
                 }}
                 onClick={() => scrollToSection(id)}
               >

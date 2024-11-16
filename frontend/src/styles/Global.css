@@ -13,3 +13,22 @@ p {
     color: #e0e0e0;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
+
+button {
+    justify-content: center;
+    text-align: center;
+    padding: 20px 30px;
+    font-size: 1.5em;
+    font-weight: bold;
+    background-color: #32706a;
+    box-shadow: 0 0 10px #32706a;
+    color: white;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    box-shadow: 0 0 20px #3e8a84, 0 0 30px #3e8a84;    
+    background-color: #3e8a84;
+    color: #EEEEEE;
+}
