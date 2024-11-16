@@ -34,9 +34,29 @@ async def end_session(session_id: str):
     session_manager.end_session(session_id)
     return {"message": "Session ended"}
 
+@app.delete("/api/sessions/{session_id}/delete")
+async def delete_session(session_id: str):
+    """Permanently delete a session"""
+    try:
+        session_manager.delete_session(session_id)
+        return {"message": "Session deleted successfully"}
+    except Exception as e:
+        logging.error(f"Error deleting session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/api/sessions/{session_id}/status")
 async def get_session_status(session_id: str):
     return session_manager.get_status(session_id)
+
+@app.get("/api/sessions/history")
+async def get_session_history(limit: int = 10, status: str = None):
+    """Get recent session history with optional status filter"""
+    try:
+        sessions = session_manager.get_all_sessions(limit=limit, status=status)
+        return [session.model_dump() for session in sessions]  # Convert to dict for JSON response
+    except Exception as e:
+        logging.error(f"Error fetching session history: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/process_audio")
 async def process_audio_endpoint(

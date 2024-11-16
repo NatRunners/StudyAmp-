@@ -88,12 +88,12 @@
 /* Responsive styling */
 @media screen and (max-width: 567px) {
     .nav-left {
-        padding-top: 20px;
+        padding-top: 15px;
         float: left;
     }
 
     .nav-left img {
-        height: 35px;
+        height: 30px;
     }
 
     .nav-right {
@@ -101,9 +101,9 @@
     }
 
     .nav-right li {
-        padding: 10px 15px;
+        padding: 8px 12px;
         list-style: none;
-        font-size: 13px;
+        font-size: 12px;
         color: white;
         width: 10%;
     }
@@ -119,19 +119,20 @@
     }
 
     .landing-section {
-        padding-left: 5%;
-        padding-right: 5%;
-        font-size: 12px;
+        padding-left: 3%;
+        padding-right: 3%;
+        font-size: 11px;
     }
 }
 
 @media screen and (max-width: 768px) {
     .landing-section h1 {
-        font-size: 4em !important;
+        font-size: 3.5em !important;
         text-align: left;
     }
 
     .landing-section p {
+        font-size: 1.5rem;
         text-align: left;
     }
 
@@ -156,20 +157,34 @@
     }
 
     .landing-section {
-        padding-top: 150px;
+        padding-top: 120px;
         display: block;
         padding-left: 0;
         padding-right: 0;
     }
 
     .landing-section .content {
-        width: 90%;
-        padding: 0 5%;
+        width: 95%;
+        padding: 0 3%;
         padding-bottom: 5%;
     }
 
     .landing-section .image-wrapper {
-        padding-left: 5%;
+        padding-left: 3%;
         width: 100%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .landing-section {
+        padding: 0 8%;
+    }
+
+    .landing-section .content h1 {
+        font-size: 3.8em;
+    }
+
+    .landing-section .content p {
+        font-size: 1.6rem;
     }
 }
