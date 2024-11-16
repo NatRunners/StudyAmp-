@@ -114,3 +114,23 @@
     color: #ffffff;
     font-size: 1.2em;
 }
+
+.summaries-container {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.summary-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.summary-card p {
+    margin: 0;
+    line-height: 1.5;
+    color: #ffffff;
+}

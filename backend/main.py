@@ -1,8 +1,9 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, File, UploadFile, Form
 from models import SessionData, EEGData
 from device_manager import DeviceManager
 from signal_processor import SignalProcessor
 from session_manager import SessionManager
+from audio_processor import AudioProcessor
 from datetime import datetime, timezone
 from starlette.middleware.cors import CORSMiddleware
 import asyncio
@@ -36,6 +37,18 @@ async def end_session(session_id: str):
 @app.get("/api/sessions/{session_id}/status")
 async def get_session_status(session_id: str):
     return session_manager.get_status(session_id)
+
+@app.post("/api/process_audio")
+async def process_audio_endpoint(
+    audio: UploadFile = File(...),
+    timestamps: str = Form(...)
+):
+    try:
+        audio_processor = AudioProcessor()
+        summaries = await audio_processor.process_audio(audio.file, timestamps)
+        return {"summaries": summaries}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.websocket("/ws/{session_id}")
 async def websocket_endpoint(websocket: WebSocket, session_id: str):
