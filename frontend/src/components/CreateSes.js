@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
+import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import '../styles/CreateSes.css';
 import '../styles/Global.css';
 
@@ -47,12 +47,13 @@ const CreateSes = () => {
 
   const handleStopSession = () => {
     if (socket) {
-      fetch(`${apiUrl}/sessions/${session.session_id}`, {method: 'DELETE'})
+      setIsSessionActive(false); 
+  
+      fetch(`${apiUrl}/sessions/${session.session_id}`, { method: 'DELETE' })
         .then((response) => response.text())
         .then((result) => {
           console.log(result);
           socket.close(); // Close the WebSocket connection
-          setIsSessionActive(false); // Session has stopped
           setSocket(null); // Reset WebSocket instance
           setSession(null);
         })
@@ -130,11 +131,12 @@ const CreateSes = () => {
           </button>
         )}
       </div>
-
-      <div className="graph-container">
-        <h2>Real-Time Attention Score</h2>
-        <Line data={chartData} />
-      </div>
+      {isSessionActive && (
+        <div className="graph-container">
+          <h1>Real-Time Attention Score</h1>
+          <Line data={chartData} width={960} height={400}/>
+        </div>
+      )}
     </div>
   );
 };
