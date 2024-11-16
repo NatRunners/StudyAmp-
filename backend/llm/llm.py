@@ -1,86 +1,47 @@
-import openai
-from typing import Dict, List
+import google.generativeai as genai
 import os
 from dotenv import load_dotenv
-import concurrent.futures
+import pathlib as Pathlib
 
 load_dotenv()
 
 
 class LLM:
     def __init__(self, api_key: str):
-        openai.api_key = os.getenv("OPENAI_API_KEY")
+        """
+        Initialize the LLM class with an API key.
+        """
+        self.api_key = os.getenv("GEMINI_API_KEY")
+        genai.configure(api_key=self.api_key)
+        self.model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
-    def transcribe_audio(self, audio_file_path: str) -> str:
+
+    def summarize_audio(self, audio_file_path: str) -> str:
         """
-        Transcribes audio using OpenAI Whisper API.
+        Directly processes audio using Gemini API and generates a summary.
         """
+
+        
+        prompt = "Summarize the following lecture in a structured manner with headings and paragraphs. Avoid using bullet points or special characters such as stars (*). Instead, format the text as plain sentences with clear separations along with notes to help the user understand the key points.\n\n"
+
         try:
-            with open(audio_file_path, "rb") as audio_file:
-                response = openai.audio.transcriptions.create(
-                    model="whisper-1",
-                    file=audio_file,
-                )
+
+
+            response = self.model.generate_content([
+                prompt,
+                {
+                    "mime_type": "audio/mp3",
+                    "data": Pathlib.Path(audio_file_path).read_bytes()
+                }
+            ])
+            # response = self.model.generate_content([prompt, audio_file_path])
+
+            # print(response.text)
             return response.text
         except Exception as e:
-            raise Exception(f"Error transcribing audio: {e}")
+            raise Exception(f"Error summarizing audio: {e}")
 
-    def chunk_transcript(self, transcript: str, max_tokens: int = 3000) -> List[str]:
-        """
-        Splits the transcript into smaller chunks to fit within the token limit.
-        """
-        words = transcript.split()
-        chunks = []
-        current_chunk = []
-
-        for word in words:
-            current_chunk.append(word)
-            if len(" ".join(current_chunk)) > max_tokens:
-                chunks.append(" ".join(current_chunk))
-                current_chunk = []
-
-        if current_chunk:
-            chunks.append(" ".join(current_chunk))
-
-        return chunks
-
-    def generate_summaries(self, transcript: str) -> List[str]:
-        """
-        Generates summaries for each chunk of the transcript.
-        """
-        chunks = self.chunk_transcript(transcript)
-        summaries = []
-
-        def summarize_chunk(chunk):
-            prompt = (
-                "You are an AI assistant. Use the following transcript chunk "
-                "to generate summarized notes in a clear and concise paragraph form.\n\n"
-                f"Transcript Chunk: {chunk}\n\n"
-                "Summarized Notes:\n"
-            )
-            try:
-                response = openai.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[{"role": "user", "content": prompt}],
-                )
-                return response.choices[0].message.content
-            except Exception as e:
-                return f"Error in processing chunk: {e}"
-
-        # Use ThreadPoolExecutor to process chunks concurrently
-        max_threads = 4  # Adjust based on your system and API rate limits
-        with concurrent.futures.ThreadPoolExecutor(max_threads) as executor:
-            future_to_chunk = {executor.submit(summarize_chunk, chunk): chunk for chunk in chunks}
-            for future in concurrent.futures.as_completed(future_to_chunk):
-                try:
-                    summaries.append(future.result())
-                except Exception as e:
-                    print(f"Error generating summary for a chunk: {e}")
-
-        return summaries
-
-
-    def generate_focus_insights(self, focus_data: Dict) -> str:
+    def generate_focus_insights(self, focus_data: dict) -> str:
         """
         Generates actionable insights based on the focus data.
         """
@@ -91,10 +52,7 @@ class LLM:
             "Actionable Insights:\n"
         )
         try:
-            response = openai.chat.completions.create(
-                model="gpt-4",
-                messages=[{"role": "user", "content": prompt}],
-            )
-            return response.choices[0].message.content
+            response = self.model.generate_content([prompt])
+            return response.text
         except Exception as e:
             raise Exception(f"Error generating focus insights: {e}")
