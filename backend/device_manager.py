@@ -21,6 +21,10 @@ class DeviceManager:
 
             self.board = BoardShim(board_id, params)
             self.board.prepare_session()
+
+            # Enable necessary presets
+            self.board.config_board("p50")  # Enable 5th EEG channel and PPG data
+
             self.board.start_stream()
             logging.info("Successfully connected to Muse 2 headset.")
             self.connected = True
