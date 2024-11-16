@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/ViewSes.css';
+import '../styles/Global.css';
 
 const ViewSes = () => {
   // Mock data for past sessions

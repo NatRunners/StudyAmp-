@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/CreateSes.css';
+import '../styles/Global.css';
 
 const CreateSes = () => {
   const handleStartSession = () => {
