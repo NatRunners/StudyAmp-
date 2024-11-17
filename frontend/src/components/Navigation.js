@@ -78,6 +78,8 @@ const Navigation = () => {
           backgroundColor: scrolled ? "rgba(0, 0, 0, 0.8)" : "transparent",
           color: "white",
           transition: "background-color 0.3s",
+          height: "10%",             
+          justifyContent: "center"
         }}
       >
         <Toolbar>
@@ -91,14 +93,16 @@ const Navigation = () => {
             <MenuIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}>
-            {navItems.map(([label, path]) => (
+          {navItems.map(([label, path]) => (
               <Button
                 key={path}
-                sx={{
-                  color: "#ffffff",
-                  textTransform: "none",
-                  fontSize: "1.25rem",
-                  padding: "10px 12px",
+                sx={{ 
+                  color: "#ffffff", 
+                  textTransform: "none", 
+                  fontSize: "1.5rem",
+                  padding: "12px 26px",
+                  fontWeight: 'bold',
+                  boxShadow: "none"
                 }}
                 component={Link}
                 to={path}

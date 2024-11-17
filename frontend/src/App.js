@@ -1,16 +1,16 @@
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
-import Navigation from "./components/Navigation";
-import LandingPage from "./components/LandingPage";
-import CreateSes from "./components/CreateSes";
-import SessionPage from "./components/SessionPage";
-import ViewSes from "./components/ViewSes";
-import VisualizeFocus from "./components/VisualizeFocus";
 import "./App.css";
+import Home from "./components/Home";
+import Navigation from "./components/Navigation";
+import NewSession from "./components/NewSession";
+import Overview from "./components/Overview";
+import PastSession from "./components/PastSession";
+import SessionPage from "./components/SessionPage";
 
-// Define the dark theme inline
+/// Define the dark theme inline
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -35,10 +35,11 @@ function App() {
       <Router>
         <Navigation />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/new" element={<NewSession />} />
           <Route path="/create" element={<SessionPage />} />
-          <Route path="/view" element={<ViewSes />} />
-          <Route path="/visualize" element={<VisualizeFocus />} />
+          <Route path="/view" element={<PastSession />} />
+          <Route path="/visualize" element={<Overview />} />
         </Routes>
       </Router>
     </ThemeProvider>

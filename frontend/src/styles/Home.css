@@ -6,7 +6,6 @@
 /* Landing section styles */
 .landing-section {
     display: flex;
-    gap: 30px;
     justify-content: flex-start;
     align-items: center;
     width: 100%;
@@ -42,8 +41,9 @@
 }
 
 .landing-section .content p {
-    font-size: 1.5em;
+    font-size: 2em;
     margin: 0;
+    padding-bottom: 30px;
 }
 
 .landing-section .content h1 {
@@ -51,15 +51,10 @@
     text-shadow: 2px 0px 3px black;
     font-size: 5em;
     margin: 0;
-    padding-bottom: 30px;
-}
-
-.landing-section .content p {
-    font-size: 2rem;
 }
 
 .color-changing {
-    animation: glowChange 8s infinite;
+    animation: glowChange 12s infinite;
 }
 
 @keyframes glowChange {
@@ -67,21 +62,25 @@
         color: #FFC000; /* Gold */
         text-shadow: 1px 0px 2px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
     }
-    25% {
-        color: #00A36C; /* Light green */
-        text-shadow: 1px 0px 2px black, 0 0 1px #00A36C, 0 0 3px #00A36C;
+    20% {
+        color: #173B3B; /* Light green */
+        text-shadow: 1px 0px 2px black, 0 0 5px #285954, 0 0 10px #285954;
     }
-    50% {
-        color: #F08000; /* Orange */
-        text-shadow: 1px 0px 2px black,  0 0 1px #F08000, 0 0 3px #F08000;
+    40% {
+        color: #747A60; /* pastel yellow */
+        text-shadow: 1px 0px 2px black, 0 0 5px #747A60, 0 0 10px #747A60;
     }
-    75% {
-        color: #065465; /* Turquoise */
-        text-shadow: 1px 0px 2px black, 0 0 1px #065465, 0 0 3px #065465;
+    60% {
+        color: #FF964F; /* Orange */
+        text-shadow: 1px 0px 2px black,  0 0 15px #7F4D32, 0 0 20px #7F4D32;
+    }
+    80% {
+        color: #265450; /* Turquoise */
+        text-shadow: 1px 0px 2px black, 0 0 10px #737760, 0 0 15px #737760;
     }
     100% {
         color: #FFC000; /* Gold */
-        text-shadow: 1px 0px 2px black, 0 0 1px #FFC000, 0 0 3px #FFC000;
+        text-shadow: 1px 0px 2px black, 0 0 2px #FFC000, 0 0 5px #FFC000;
     }
 }
 

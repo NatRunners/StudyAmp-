@@ -33,32 +33,6 @@
     }
 }
 
-
-
-/* Start session button with glow effect */
-.start-session-button {
-    padding: 14px 28px;
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #3a8dff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0px 0px 15px rgba(58, 141, 255, 0.5); /* Button glow effect */
-}
-
-.start-session-button:hover {
-    background-color: #5d5eff;
-    box-shadow: 0px 0px 25px rgba(93, 94, 255, 0.8); /* Stronger glow on hover */
-}
-
-.start-session-button:active {
-    transform: scale(0.98);
-}
-
 .graph-container h1{
     font-size: 2em;
     padding: 0;

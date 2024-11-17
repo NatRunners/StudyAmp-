@@ -30,15 +30,15 @@
 }
 
 .stat-item h2 {
-    font-size: 1.6em;
+    font-size: 1.3em;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .stat-item p {
-    font-size: 1.8em;
+    font-size: 2.2em;
     font-weight: bold;
-    color: #3a8dff;
+    color: #5fb7b0;
 }
 
 /* Chart container styling */

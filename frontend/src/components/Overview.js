@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line, Bar } from 'react-chartjs-2';
-import '../styles/VisualizeFocus.css';
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
+import React, { useEffect, useState } from 'react';
+import { Bar, Line } from 'react-chartjs-2';
 import '../styles/Global.css';
+import '../styles/Overview.css';
 
 // Register the necessary components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
-const VisualizeFocus = () => {
+const Overview = () => {
   const [summaryStats, setSummaryStats] = useState({
     totalSessions: 10,
     averageFocusDuration: '1h 20m',
@@ -21,8 +21,8 @@ const VisualizeFocus = () => {
         label: 'Focus Duration (minutes)',
         data: [50, 70, 80, 65, 90, 75],
         fill: false,
-        backgroundColor: '#3a8dff',
-        borderColor: '#3a8dff',
+        backgroundColor: '#3e8a84',
+        borderColor: '#3e8a84',
       },
     ],
   };
@@ -33,7 +33,7 @@ const VisualizeFocus = () => {
       {
         label: 'Focus Level (%)',
         data: [80, 85, 75, 70, 90, 78],
-        backgroundColor: 'rgba(58, 141, 255, 0.8)',
+        backgroundColor: '#3e8a84',
       },
     ],
   };
@@ -81,4 +81,4 @@ const VisualizeFocus = () => {
   );
 };
 
-export default VisualizeFocus;
+export default Overview;
