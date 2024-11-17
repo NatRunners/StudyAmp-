@@ -370,10 +370,15 @@ const SessionPage = () => {
                 <>
                   {Array.isArray(summaries) && summaries.length > 0 && (
                     <div className="summaries-container" style={{ width: '100%' }}>
-                      {summaries.map((summary, index) => (
-                        <div key={index} className="summary-card">
-                          <h2>Session Insights</h2>
-                          <p>{summary || 'No summary available'}</p>
+                      {summaries.map((summary) => (
+                        <div key={summary} className="summary-card">
+                          <h3>Topic: {summaries[0].topic}</h3>
+                          <p>Summary: {summaries[0].summary}</p>
+                          <ul>
+                            {summaries[0]['key_points'].map((point, idx) => (
+                              <li key={idx}>{point}</li>
+                            ))}
+                          </ul>
                         </div>
                       ))}
                     </div>
