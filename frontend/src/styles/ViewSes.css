@@ -7,7 +7,7 @@
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: #ffffff;
-    padding: 60px 20px;
+    padding: 20px;
     text-align: center;
 }
 
@@ -17,15 +17,22 @@
     flex-wrap: wrap;
     max-height: 480px;
     overflow-y: auto;
-    margin: 0 auto;
-    padding: 15 px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 0 auto 40px auto; 
+    padding: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     background-color: rgba(0, 0, 0, 0.3); 
-    max-width: 70%;
+    width: 100%; 
+    max-width: 1160px; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
+.session-list-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    margin: 0 auto;
+}
 
 /* Session card styling */
 .session-card {
@@ -111,7 +118,7 @@
 }
 
 .view-ses-page {
-    padding-top: 80px;
+    padding-top: 20px;
     min-height: 100vh;
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../images/background.jpg");
     background-size: cover;
@@ -126,10 +133,12 @@
 }
 
 .view-ses-page h1 {
-    font-size: 2.5em;
+    margin-top: 100px;
     margin-bottom: 40px;
+    font-size: 2.5em;
     text-align: center;
     width: 100%;
+    padding: 0;
 }
 
 .metrics-grid {
@@ -142,10 +151,12 @@
     padding: 0 20px;
 }
 
-h2 {
+.view-ses-page h2 {
     width: 100%;
+    font-size: 2.5em;
     text-align: center;
     margin-bottom: 20px;
+    margin-top: 40px;
 }
 
 /* Responsive design */
@@ -173,11 +184,7 @@ h2 {
     }
 
     .scrollable-session-list {
-        max-width: 90%;
-    }
-
-    .scrollable-session-list {
-        max-width: 90%;
+        max-width: calc(100% - 40px);
     }
 
     .session-card h2 {

@@ -3,7 +3,6 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import CreateSes from "./components/CreateSes";
 import LandingPage from "./components/LandingPage";
 import Navigation from "./components/Navigation";
 import SessionPage from "./components/SessionPage";
@@ -36,7 +35,6 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/new" element={<CreateSes />} />
           <Route path="/create" element={<SessionPage />} />
           <Route path="/view" element={<ViewSes />} />
           <Route path="/visualize" element={<VisualizeFocus />} />

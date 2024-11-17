@@ -179,7 +179,7 @@ const SessionHistory = () => {
 
   return (
     <div className="view-ses-page">
-      <h1>Session History & Analytics</h1>
+      <h1>Sessions History & Analytics</h1>
       
       <div className="metrics-grid">
         {metricsData && (

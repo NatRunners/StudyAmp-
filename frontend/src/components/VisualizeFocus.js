@@ -51,7 +51,7 @@ const VisualizeFocus = () => {
 
   return (
     <div className="visualize-focus-page">
-      <h1>Focus VisualizeFocus</h1>
+      <h1>Focus Overview</h1>
       
       <div className="summary-stats">
         <div className="stat-item">

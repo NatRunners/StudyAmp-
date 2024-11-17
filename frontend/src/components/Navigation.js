@@ -20,7 +20,7 @@ const navItems = [
   ["Home", "/"],
   ["New Session", "/create"],
   ["Past Sessions", "/view"],
-  ["VisualizeFocus", "/visualize"],
+  ["Overview", "/visualize"],
 ];
 
 const Navigation = () => {

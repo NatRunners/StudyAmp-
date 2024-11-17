@@ -7,7 +7,7 @@
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: #ffffff;
-    padding: 60px 20px;
+    padding-top: 20px;
     text-align: center;
 }
 
@@ -27,6 +27,15 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 300px;
     text-align: center;
+}
+
+.visualize-focus-page h1 {
+    margin-top: 100px;
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    text-align: center;
+    width: 100%;
+    padding: 0;
 }
 
 .stat-item h2 {
@@ -63,6 +72,7 @@
 /* Responsive design */
 @media (max-width: 768px) {
     .visualize-focus-page h1 {
+        margin-top: 60px;
         font-size: 2em;
     }
 
