@@ -14,6 +14,10 @@ import magic
 import uuid
 from dotenv import load_dotenv
 import asyncio
+# from parser import AudioParser
+from prompt import PromptGenerator
+
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -58,6 +62,7 @@ class AudioProcessor:
         try:
             timestamps = json.loads(timestamps_json)
             logger.info(f"Processing {len(timestamps)} low attention periods")
+
             
             # Save and validate input file
             input_filename, input_path = self._create_temp_file('.webm')
@@ -123,12 +128,13 @@ class AudioProcessor:
                 
                 logger.info(f"Audio loaded successfully: {len(audio)/1000:.2f}s, {audio.frame_rate}Hz")
 
-                # Process segments
-                segments = self._extract_segments(audio, timestamps)
-                if not segments:
-                    return ["No valid audio segments found for analysis."]
+                # # Process segments
+                # segments = self._extract_segments(audio, timestamps)
+                # if not segments:
+                #     return ["No valid audio segments found for analysis."]
 
-                summaries = await self._get_summaries(segments)
+                summaries = await self._generate_summary(audio, timestamps)
+                print("Summaries audio_processor.py: ", summaries)
                 return summaries
 
             except subprocess.TimeoutExpired:
@@ -179,9 +185,107 @@ class AudioProcessor:
             segments = [audio]
         
         return segments
+    
 
-    async def _get_summaries(self, segments: List[AudioSegment]) -> List[str]:
+    async def _generate_summary(self, audio: AudioSegment, timestamps: List[Dict]) -> List[str]:
+
+        # Generate summary for the entire audio where the user lost focus based on the timestamps where the user lost focus
+        # Generate summary for each segment where the user lost focus
+        # Return a list of summaries
+
         summaries = []
+        filename, filepath = self._create_temp_file('.mp3')
+        try:
+            logger.info(f"Exporting audio to {filepath}")
+            audio.export(
+                filepath,
+                format='mp3',
+                parameters=["-acodec", "libmp3lame", "-q:a", "2"]
+            )
+            
+            if os.path.getsize(filepath) == 0:
+                raise ValueError("Exported audio is empty")
+            
+            logger.info(f"Uploading audio to Gemini")
+            audio_file = genai.upload_file(filepath)
+            # print(filepath)
+            # filepath = "./harvard.wav"
+            audio_file = genai.upload_file(filepath)
+
+
+
+            prompt = PromptGenerator.generate_summary_prompt()
+            #print timestamps
+            print(timestamps)
+            timestamps_desc = "\n".join(
+                [f"- At {t['timestamp']} seconds: score = {t['score']}\n." for t in timestamps]
+            )
+            # print(prompt)
+            #add timestamps to prompt
+            prompt = prompt + timestamps_desc
+            print(prompt)
+
+            try:
+                response = self.model.generate_content([prompt, audio_file])
+
+
+        
+                # Handle response directly
+                response.resolve()  # Ensure generation is complete
+                # Extract text response
+                raw_summary = response.text
+                # print("Raw Summary:", raw_summary)
+
+                # strip everything until the first '{' character everything after the last '}' character
+
+                raw_summary = raw_summary[raw_summary.find('{'):]
+                raw_summary = raw_summary[:raw_summary.rfind('}')+1]
+                # print("Raw Summary:", raw_summary)
+
+                # Parse the JSON string into a dictionary
+                summary_data = json.loads(raw_summary)
+
+                # Store in a hashmap
+                hashmap = {
+                    'topic': summary_data['topic'],
+                    'summary': summary_data['summary'],
+                    'key_points': summary_data['key_points']
+                }
+
+                print("Hashmap:", hashmap)
+                
+
+                # Append the hashmap to summaries if needed
+                summaries.append(hashmap)
+
+                # print("Summaries:", summaries)
+
+                logger.info(f"Successfully got analysis for audio")
+                
+                return summaries
+
+            
+                
+            
+            finally:
+                try:
+                    if os.path.exists(filepath):
+                        os.chmod(filepath, 0o666)
+                        os.unlink(filepath)
+                        logger.info(f"Cleaned up audio file: {filepath}")
+                except Exception as e:
+                    logger.warning(f"Failed to cleanup audio file {filepath}: {e}")
+
+
+        except Exception as e:
+            logger.error(f"Gemini API error: {str(e)}")
+            summaries.append(f"Error analyzing audio: {str(e)}")
+
+
+    async def _get_summaries(self, segments: AudioSegment, timestamps: List[Dict]) -> List[str]:
+
+        summaries = []
+        
         for i, segment in enumerate(segments):
             try:
                 logger.info(f"Processing segment {i+1}/{len(segments)}")
@@ -200,19 +304,63 @@ class AudioProcessor:
                         raise ValueError(f"Exported segment {i+1} is empty")
 
                     logger.info(f"Uploading segment {i+1} to Gemini")
+
+                    # print(filepath)
+                    filepath = "./harvard.wav"
                     audio_file = genai.upload_file(filepath)
+
+
+
+                    prompt = PromptGenerator.generate_summary_prompt()
+                    #print timestamps
+                    print(timestamps)
+                    timestamps_desc = "\n".join(
+                        [f"- At {t['timestamp']} seconds: score = {t['score']}\n." for t in timestamps]
+                    )
+                    # print(prompt)
+                    #add timestamps to prompt
+                    prompt = prompt + timestamps_desc
+                    print(prompt)
+
+
+                
                     
                     logger.info(f"Getting analysis for segment {i+1}")
                     try:
-                        response = self.model.generate_content([
-                            audio_file,
-                            "Summarize this audio segment from a focused study session. "
-                            "Provide insights on the content discussed and filter out any noticeable distractions or background noises. "
-                            "This will help the user understand content they may have missed due to low attention."
-                        ])
+                        response = self.model.generate_content([prompt, audio_file])
+
+
+                
                         # Handle response directly
                         response.resolve()  # Ensure generation is complete
-                        summaries.append(response.text)
+                        # Extract text response
+                        raw_summary = response.text
+                        # print("Raw Summary:", raw_summary)
+
+                        # strip everything until the first '{' character everything after the last '}' character
+
+                        raw_summary = raw_summary[raw_summary.find('{'):]
+                        raw_summary = raw_summary[:raw_summary.rfind('}')+1]
+                        # print("Raw Summary:", raw_summary)
+
+                        # Parse the JSON string into a dictionary
+                        summary_data = json.loads(raw_summary)
+
+                        # Store in a hashmap
+                        hashmap = {
+                            'topic': summary_data['topic'],
+                            'summary': summary_data['summary'],
+                            'key_points': summary_data['key_points']
+                        }
+
+                        print("Hashmap:", hashmap)
+                        
+
+                        # Append the hashmap to summaries if needed
+                        summaries.append(hashmap)
+
+                       
+                        
                         logger.info(f"Successfully got analysis for segment {i+1}")
                     except Exception as e:
                         logger.error(f"Gemini API error: {str(e)}")
@@ -234,7 +382,3 @@ class AudioProcessor:
                 summaries.append(f"Could not analyze segment {i + 1}: {str(e)}")
         
         return summaries if summaries else ["No audio segments could be analyzed"]
-
-    def _transcribe_audio(self, segment: AudioSegment) -> str:
-        # Remove this method as it's no longer needed
-        pass
