@@ -1,0 +1,88 @@
+/* Dark mode styling for Login page */
+.dark-mode .login-section {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Login section styles */
+.login-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url("../images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: white;
+}
+
+.login-section .content {
+    text-align: center;
+    z-index: 2;
+    font-size: 1.1rem;
+    max-width: 500px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+}
+
+.login-section .content h1 {
+    color: #DDDDDD;
+    text-shadow: 2px 0px 3px black;
+    font-size: 3.5em;
+    margin-bottom: 20px;
+}
+
+.login-section .content p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.login-section .form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-section .form input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+.login-section button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #32706a;
+    box-shadow: 0 0 10px #32706a;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-section button:hover {
+    box-shadow: 0 0 20px #3e8a84, 0 0 30px #3e8a84;    
+    background-color: #3e8a84;
+    color: #EEEEEE;
+}
+
+/* Responsive styling for Login page */
+@media screen and (max-width: 768px) {
+    .login-section .content h1 {
+        font-size: 2.5em;
+    }
+
+    .login-section .content p {
+        font-size: 1.1rem;
+    }
+
+    .login-section .content {
+        width: 80%;
+        padding: 20px;
+    }
+}

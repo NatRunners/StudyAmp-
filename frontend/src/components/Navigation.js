@@ -1,4 +1,6 @@
 import MenuIcon from "@mui/icons-material/Menu";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,6 +15,7 @@ import Toolbar from "@mui/material/Toolbar";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Global.css";
+import { UserContext } from "../context/UserContext";  // Import UserContext for user state
 
 const drawerWidth = 240;
 
@@ -24,8 +27,10 @@ const navItems = [
 ];
 
 const Navigation = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+  const { user, logout } = useContext(UserContext);  // Get the logged-in user and logout function from context
+  const navigate = useNavigate();  // For navigation after logout
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -39,12 +44,17 @@ const Navigation = () => {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleLogout = () => {
+    logout();  // Clear user state
+    navigate("/login");  // Redirect to login page
+  };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -64,6 +74,27 @@ const Navigation = () => {
             </ListItemButton>
           </ListItem>
         ))}
+        {/* Conditionally render Login/Settings and Logout based on user state */}
+        <ListItem disablePadding>
+          <ListItemButton
+            sx={{ textAlign: "center" }}
+            component={Link}
+            to={user ? "/settings" : "/login"}
+          >
+            <ListItemText primary={user ? "Settings" : "Login"} />
+          </ListItemButton>
+        </ListItem>
+        {/* If logged in, show the Logout button */}
+        {user && (
+          <ListItem disablePadding>
+            <ListItemButton
+              sx={{ textAlign: "center" }}
+              onClick={handleLogout}  // Logout functionality
+            >
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+          </ListItem>
+        )}
       </List>
     </Box>
   );
@@ -116,6 +147,49 @@ const Navigation = () => {
                 {label}
               </Button>
             ))}
+          </Box>
+          {/* Conditionally render the Login/Settings and Logout button in the main navbar */}
+          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            {user ? (
+              <>
+                <Button
+                  sx={{
+                    color: "#ffffff",
+                    textTransform: "none",
+                    fontSize: "1.25rem",
+                    padding: "10px 12px",
+                  }}
+                  component={Link}
+                  to="/settings"
+                >
+                  Settings
+                </Button>
+                <Button
+                  sx={{
+                    color: "#ffffff",
+                    textTransform: "none",
+                    fontSize: "1.25rem",
+                    padding: "10px 12px",
+                  }}
+                  onClick={handleLogout}  // Logout functionality
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button
+                sx={{
+                  color: "#ffffff",
+                  textTransform: "none",
+                  fontSize: "1.25rem",
+                  padding: "10px 12px",
+                }}
+                component={Link}
+                to="/login"
+              >
+                Login
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
