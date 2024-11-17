@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/CreateSes.css';
 import '../styles/Global.css';
-import '../styles/NewSession.css';
 
-const NewSession = () => {
+const CreateSes = () => {
   const navigate = useNavigate();
 
   const handleStartSession = () => {
@@ -28,4 +28,4 @@ const NewSession = () => {
   );
 };
 
-export default NewSession;
+export default CreateSes;

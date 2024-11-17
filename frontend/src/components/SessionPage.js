@@ -11,8 +11,8 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
+import '../styles/CreateSes.css';
 import '../styles/Global.css';
-import '../styles/NewSession.css';
 import '../styles/SessionPage.css';
 
 ChartJS.register(

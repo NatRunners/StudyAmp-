@@ -2,12 +2,12 @@ import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, LineE
 import React, { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import '../styles/Global.css';
-import '../styles/Overview.css';
+import '../styles/VisualizeFocus.css';
 
 // Register the necessary components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
-const Overview = () => {
+const VisualizeFocus = () => {
   const [summaryStats, setSummaryStats] = useState({
     totalSessions: 10,
     averageFocusDuration: '1h 20m',
@@ -51,7 +51,7 @@ const Overview = () => {
 
   return (
     <div className="visualize-focus-page">
-      <h1>Focus Overview</h1>
+      <h1>Focus VisualizeFocus</h1>
       
       <div className="summary-stats">
         <div className="stat-item">
@@ -81,4 +81,4 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+export default VisualizeFocus;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Home.css';
+import '../styles/LandingPage.css';
 
-const Home = () => {
+const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
@@ -24,4 +24,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LandingPage;
