@@ -1,3 +1,11 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Line } from 'react-chartjs-2';
+import { useNavigate } from 'react-router-dom';
+import '../styles/CreateSes.css';
+import '../styles/Global.css';
+import '../styles/SessionPage.css';
+
+// Add necessary imports for Chart.js
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -8,12 +16,6 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import React, { useEffect, useRef, useState } from 'react';
-import { Line } from 'react-chartjs-2';
-import { useNavigate } from 'react-router-dom';
-import '../styles/CreateSes.css';
-import '../styles/Global.css';
-import '../styles/SessionPage.css';
 
 ChartJS.register(
   CategoryScale,
@@ -63,6 +65,29 @@ const SessionPage = () => {
       });
     }
   }, [processingStatus]);
+  const [lowAttentionScore, setLowAttentionScore] = useState(50);
+  const [notificationInterval, setNotificationInterval] = useState(60); // seconds
+
+  const notificationTimerRef = useRef(null);
+
+  useEffect(() => {
+    // Retrieve settings from localStorage
+    const savedLowAttentionScore = localStorage.getItem('lowAttentionScore');
+    const savedNotificationInterval = localStorage.getItem('frequency');
+
+    if (savedLowAttentionScore) {
+      setLowAttentionScore(Number(savedLowAttentionScore));
+    }
+
+    if (savedNotificationInterval) {
+      setNotificationInterval(Number(savedNotificationInterval));
+    }
+
+    // Request notification permission
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+  }, []);
 
   const calculateMovingAverage = (scores) => {
     if (!scores || scores.length === 0) return 0;
@@ -86,18 +111,18 @@ const SessionPage = () => {
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new MediaRecorder(stream, {
-        mimeType: 'audio/webm'
+        mimeType: 'audio/webm',
       });
-      
+
       recorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunks.current.push(event.data);
         }
       };
-      
+
       recorder.start(1000);
       setMediaRecorder(recorder);
-      
+
       handleStartSession();
       setIsConfirmed(true);
       setSessionEnded(false);
@@ -144,8 +169,11 @@ const SessionPage = () => {
     try {
       setProcessingStatus('Stopping recording...');
       mediaRecorder.stop();
-      
-      await new Promise(resolve => {
+
+      // Clear the notification timer when session stops
+      clearInterval(notificationTimerRef.current);
+
+      await new Promise((resolve) => {
         mediaRecorder.onstop = async () => {
           if (audioChunks.current.length > 0 && lowAttentionPeriods.current.length > 0) {
             setProcessingStatus('Preparing audio data...');
@@ -160,11 +188,11 @@ const SessionPage = () => {
                 method: 'POST',
                 body: formData,
               });
-              
+
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
               }
-              
+
               const data = await response.json();
               setProcessingStatus('');
               setSummaries(data.summaries || ['No insights available for this session.']);
@@ -229,14 +257,16 @@ const SessionPage = () => {
       const attentionScore = data.attention_score;
       const timestamp = new Date(data.timestamp * 1000).toLocaleTimeString();
 
-      if (data.attention_score < 50) {
+      // Check if attention score drops below threshold
+      if (attentionScore > 0 && attentionScore < lowAttentionScore) {
+        // Add to low attention periods
         lowAttentionPeriods.current.push({
           timestamp: data.timestamp,
-          score: data.attention_score
+          score: attentionScore,
         });
       }
 
-      setAttentionScores(prev => {
+      setAttentionScores((prev) => {
         const newScores = [...prev, attentionScore];
         const updatedScores = newScores.slice(-33);
         setMovingAverage(calculateMovingAverage(updatedScores));
@@ -264,8 +294,26 @@ const SessionPage = () => {
       });
     };
 
-    newSocket.onerror = (error) => console.error('WebSocket error: ', error);
-    newSocket.onclose = () => console.log('WebSocket connection closed');
+    newSocket.onerror = (error) => {
+      console.error('WebSocket error: ', error);
+    };
+
+    newSocket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    // Start a timer to send notifications at the user-defined interval
+    notificationTimerRef.current = setInterval(() => {
+      if (lowAttentionPeriods.current.length > 0) {
+        const lastAttentionDrop = lowAttentionPeriods.current[lowAttentionPeriods.current.length - 1];
+        const score = lastAttentionDrop.score.toFixed(2);
+        if (Notification.permission === 'granted') {
+          new Notification('Low Attention Detected', {
+            body: `Attention score dropped to ${score}%`,
+          });
+        }
+      }
+    }, notificationInterval * 1000); // Interval in milliseconds
   };
 
   return (
