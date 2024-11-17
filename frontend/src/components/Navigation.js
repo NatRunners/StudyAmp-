@@ -17,7 +17,7 @@ const drawerWidth = 240;
 
 // Updated navigation items
 const navItems = [
-  ["LandingPage", "/"],
+  ["Home", "/"],
   ["New Session", "/create"],
   ["Past Sessions", "/view"],
   ["VisualizeFocus", "/visualize"],
