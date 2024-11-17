@@ -1,6 +1,7 @@
 class PromptGenerator:
     @staticmethod
-    def generate_summary_prompt():
+    def generate_summary_prompt() -> str:
+    
 
         # prompt = """List a few popular cookie recipes in JSON format.
 
@@ -12,13 +13,16 @@ class PromptGenerator:
         #use above prompt as template
         
         prompt = """
-        Based on the analysis of the audio segment, provide a summary of the discussion and key points covered.
+        Based on the analysis of the audio segment, provide a summary of the discussion based on the timestamps given and key points covered.
         Include any important details or insights that would be relevant to the user's request.
+        
 
         Use this JSON schema:
 
         Audio_Sum = {'topic': str, 'summary': str, 'key_points': list[str]}
         Return: Audio_Sum
+        
+        The timestamps are times where the user lost focus.
         """
 
         return prompt

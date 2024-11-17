@@ -66,6 +66,7 @@ async def process_audio_endpoint(
     try:
         audio_processor = AudioProcessor()
         summaries = await audio_processor.process_audio(audio.file, timestamps)
+        print(summaries,"main.py")
         return {"summaries": summaries}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
