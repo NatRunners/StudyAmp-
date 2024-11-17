@@ -407,14 +407,15 @@ const SessionPage = () => {
                 </div>
               ) : (
                 <>
-                  {Array.isArray(summaries) && summaries.length > 0 && (
+                {/* need summaries[0] to not be null or empty */}
+                  {Array.isArray(summaries) && summaries.length > 0 && summaries[0] && (
                     <div className="summaries-container" style={{ width: '100%' }}>
                       {summaries.map((summary) => (
                         <div key={summary} className="summary-card">
-                          <h3>Topic: {summaries[0].topic}</h3>
-                          <p>Summary: {summaries[0].summary}</p>
+                          <h3>Topic: {summary.topic}</h3>
+                          <p>Summary: {summary.summary}</p>
                           <ul>
-                            {summaries[0]['key_points'].map((point, idx) => (
+                          {Array.isArray(summary.key_points) && summary.key_points.map((point, idx) => (
                               <li key={idx}>{point}</li>
                             ))}
                           </ul>
