@@ -1,74 +1,92 @@
-/* General styling for the settings page */
+/* Dark mode styling for settings page */
+.dark-mode .settings-section {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
 .settings-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    background-image: url("../images/background.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    color: white;
-  }
-  
-  .settings-section .content {
-    text-align: center;
-    z-index: 2;
-    font-size: 1.1rem;
-    max-width: 600px;
-    padding: 30px;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../images/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  color: white;
+  padding: 40px 20px; /* Add some padding to give more space */
+}
+
+.settings-section .content {
+  text-align: center;
+  z-index: 2;
+  font-size: 1.1rem;
+  max-width: 500px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.1); /* Make this transparent like ViewSes cards */
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Add a subtle shadow */
+  backdrop-filter: blur(10px); /* Add a blur effect for a more sophisticated look */
+}
+
+.settings-section .content h1 {
+  color: #ffffff;
+  font-size: 3.5em;
+  margin-bottom: 20px;
+  text-shadow: 2px 0px 3px black; /* Keep text shadow for readability */
+}
+
+.settings-section .content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #b3b3b3; /* Use a lighter grey for the text */
+}
+
+
+.settings-section .form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.settings-section .form input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.settings-section button {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #32706a;
+  box-shadow: 0 0 10px #32706a;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.settings-section button:hover {
+  box-shadow: 0 0 20px #3e8a84, 0 0 30px #3e8a84;    
+  background-color: #3e8a84;
+  color: #EEEEEE;
+}
+
+/* Responsive styling for settings page */
+@media screen and (max-width: 768px) {
   .settings-section .content h1 {
-    color: #DDDDDD;
-    text-shadow: 2px 0px 3px black;
-    font-size: 3.5em;
-    margin-bottom: 20px;
+      font-size: 2.5em;
   }
-  
+
   .settings-section .content p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+      font-size: 1.1rem;
   }
-  
-  .settings-section .preferences {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+
+  .settings-section .content {
+      width: 80%;
+      padding: 20px;
   }
-  
-  .settings-section .preferences label {
-    font-size: 1.1rem;
-  }
-  
-  .settings-section .preferences input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
-  }
-  
-  .settings-section .preferences button {
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #90caf9;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .settings-section .preferences button:hover {
-    background-color: #3f8fcd;
-  }
-  
-  .settings-section .slider {
-    width: 80%;
-    margin-top: 10px;
-  }
-  
+}
