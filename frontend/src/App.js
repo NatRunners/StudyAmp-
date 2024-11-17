@@ -1,5 +1,6 @@
 import { CssBaseline } from "@mui/material";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import "./App.css";
 import LandingPage from "./components/LandingPage";
 import Navigation from "./components/Navigation";
 import SessionPage from "./components/SessionPage";
@@ -28,6 +29,7 @@ const darkTheme = createTheme({
 
 function App() {
   return (
+
     <UserProvider>  {/* Wrap the app inside UserProvider */}
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />

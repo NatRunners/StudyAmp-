@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/CreateSes.css';
 import '../styles/Global.css';
 import '../styles/SessionPage.css';
-
-// Add necessary imports for Chart.js
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -16,6 +14,10 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
+import React, { useEffect, useRef, useState } from 'react';
+import { Line } from 'react-chartjs-2';
+import '../styles/Global.css';
+import '../styles/SessionPage.css';
 
 ChartJS.register(
   CategoryScale,
@@ -54,7 +56,6 @@ const SessionPage = () => {
   
   const audioChunks = useRef([]);
   const lowAttentionPeriods = useRef([]);
-  const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
@@ -93,13 +94,6 @@ const SessionPage = () => {
     if (!scores || scores.length === 0) return 0;
     const sum = scores.reduce((acc, curr) => acc + curr, 0);
     return (sum / scores.length).toFixed(2);
-  };
-
-  const handleBack = () => {
-    if (socket) {
-      socket.close();
-    }
-    navigate(-1);
   };
 
   const handleConfirmStart = async () => {
@@ -321,8 +315,10 @@ const SessionPage = () => {
       <div className="text-content">
         {!isConfirmed ? (
           <>
-            <h1>New Session</h1>
-            <p>Click start when you're ready to commence your session.</p>
+            <h1>Start A New Session</h1>
+            <p>  Start a session to monitor your focus levels in real time and improve
+          your productivity. Each session is designed to help you achieve
+          better concentration and track your progress.</p>
             <button onClick={handleConfirmStart} className="start-session-button">
               Start Session
             </button>

@@ -12,6 +12,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "../styles/Global.css";
 import { UserContext } from "../context/UserContext";  // Import UserContext for user state
 
 const drawerWidth = 240;
@@ -20,7 +23,7 @@ const navItems = [
   ["Home", "/"],
   ["New Session", "/create"],
   ["Past Sessions", "/view"],
-  ["VisualizeFocus", "/visualize"],
+  ["Overview", "/visualize"],
 ];
 
 const Navigation = () => {
@@ -106,7 +109,7 @@ const Navigation = () => {
           backgroundColor: scrolled ? "rgba(0, 0, 0, 0.8)" : "transparent",
           color: "white",
           transition: "background-color 0.3s",
-          height: "10%",             
+          height: "10%",
           justifyContent: "center"
         }}
       >
@@ -121,19 +124,25 @@ const Navigation = () => {
             <MenuIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}>
-          {navItems.map(([label, path]) => (
+            {navItems.map(([label, path]) => (
               <Button
                 key={path}
-                sx={{ 
-                  color: "#ffffff", 
-                  textTransform: "none", 
-                  fontSize: "1.5rem",
-                  padding: "12px 26px",
-                  fontWeight: 'bold',
-                  boxShadow: "none"
-                }}
                 component={Link}
                 to={path}
+                sx={{
+                  color: "#ffffff",
+                  textTransform: "none",
+                  fontSize: "1.5rem",
+                  padding: "8px 20px",
+                  margin: "0 5px",
+                  fontWeight: 'bold',
+                  borderRadius: '15px',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    backgroundColor: '#3e8a84',
+                    boxShadow: '0 0 20px #3e8a84, 0 0 30px #3e8a84',
+                  }
+                }}
               >
                 {label}
               </Button>
@@ -193,7 +202,11 @@ const Navigation = () => {
         }}
         sx={{
           display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+          "& .MuiDrawer-paper": { 
+            boxSizing: "border-box", 
+            width: drawerWidth,
+            backgroundColor: "rgba(0, 0, 0, 0.9)"
+          },
         }}
       >
         {drawer}

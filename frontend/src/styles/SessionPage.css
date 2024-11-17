@@ -17,6 +17,75 @@
     animation: spin 1s linear infinite;
     margin-bottom: 20px;
   }
+
+  /* Update the create-ses-page class to use space-between */
+.create-ses-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../images/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Update text-content to create space between elements */
+.text-content {
+  max-width: 800px;
+  animation: fadeIn 1.5s ease-out;
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
+}
+
+.text-content h1 {
+  margin-top: 100px;
+  margin-bottom: 40px;
+  font-size: 2.5em;
+  text-align: center;
+  width: 100%;
+  padding: 0;
+}
+
+.text-content p {
+  margin: auto 0;
+  font-size: 1.5em;
+  line-height: 1.6;
+  padding: 100px 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 50px;
+
+}
+
+.start-session-button {
+  width: 200px; 
+  padding: 15px 0;
+  align-self: center;
+}
+
+/* Keep existing responsive design */
+@media (max-width: 768px) {
+  .text-content h1 {
+      margin-top: 60px;
+      font-size: 2em;
+  }
+  .text-content p {
+      font-size: 1em;
+  }
+  .start-session-button {
+      padding: 12px 24px;
+      font-size: 1.1em;
+      margin-bottom: 60px;
+  }
+}
   
   @keyframes spin {
     0% { transform: rotate(0deg); }
