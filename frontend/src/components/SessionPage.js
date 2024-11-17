@@ -156,6 +156,7 @@ const SessionPage = () => {
               }
               
               const data = await response.json();
+              console.log(data);
               setProcessingStatus('');
               setSummaries(data.summaries || ['No insights available for this session.']);
             } catch (error) {
@@ -167,6 +168,17 @@ const SessionPage = () => {
             setProcessingStatus('');
             setSummaries(['No attention drops detected during this session.']);
           }
+          // set summaries to mock data
+          // setSummaries([
+          //   {
+          //     topic: 'Sample Topic',
+          //     summary: 'This is a sample summary of the session.',
+          //     key_points: ['Key point 1', 'Key point 2', 'Key point 3'],
+          //   },
+          // ]);
+          console.log('Session ended');
+          // print summaries
+          console.log(summaries);
           resolve();
         };
       });
@@ -317,9 +329,16 @@ const SessionPage = () => {
         {Array.isArray(summaries) && summaries.length > 0 && (
           <div className="summaries-container">
             <h2>Session Insights</h2>
-            {summaries.map((summary, index) => (
-              <div key={index} className="summary-card">
-                <p>{summary || 'No summary available'}</p>
+
+            {summaries.map((summary) => (
+              <div key={summary} className="summary-card">
+                <h3>Topic: {summaries[0].topic}</h3>
+                <p>Summary: {summaries[0].summary}</p>
+                <ul>
+                  {summaries[0]['key_points'].map((point, idx) => (
+                    <li key={idx}>{point}</li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
