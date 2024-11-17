@@ -3,19 +3,19 @@
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* Login section styles */
 .login-section {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url("../images/background.jpg");
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../images/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
     color: white;
+    padding: 40px 20px; /* Add some padding to give more space */
 }
 
 .login-section .content {
@@ -24,21 +24,25 @@
     font-size: 1.1rem;
     max-width: 500px;
     padding: 30px;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1); /* Make this transparent like ViewSes cards */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Add a subtle shadow */
+    backdrop-filter: blur(10px); /* Add a blur effect for a more sophisticated look */
 }
 
 .login-section .content h1 {
-    color: #DDDDDD;
-    text-shadow: 2px 0px 3px black;
+    color: #ffffff;
     font-size: 3.5em;
     margin-bottom: 20px;
+    text-shadow: 2px 0px 3px black; /* Keep text shadow for readability */
 }
 
 .login-section .content p {
     font-size: 1.2rem;
     margin-bottom: 20px;
+    color: #b3b3b3; /* Use a lighter grey for the text */
 }
+
 
 .login-section .form {
     display: flex;

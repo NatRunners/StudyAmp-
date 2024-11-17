@@ -154,8 +154,16 @@ const Navigation = () => {
                   sx={{
                     color: "#ffffff",
                     textTransform: "none",
-                    fontSize: "1.25rem",
-                    padding: "10px 12px",
+                    fontSize: "1.5rem",
+                    padding: "8px 20px",
+                    margin: "0 5px",
+                    fontWeight: 'bold',
+                    borderRadius: '15px',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      backgroundColor: '#3e8a84',
+                      boxShadow: '0 0 20px #3e8a84, 0 0 30px #3e8a84',
+                    }
                   }}
                   component={Link}
                   to="/settings"
@@ -166,8 +174,16 @@ const Navigation = () => {
                   sx={{
                     color: "#ffffff",
                     textTransform: "none",
-                    fontSize: "1.25rem",
-                    padding: "10px 12px",
+                    fontSize: "1.5rem",
+                    padding: "8px 20px",
+                    margin: "0 5px",
+                    fontWeight: 'bold',
+                    borderRadius: '15px',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      backgroundColor: '#3e8a84',
+                      boxShadow: '0 0 20px #3e8a84, 0 0 30px #3e8a84',
+                    }
                   }}
                   onClick={handleLogout}  // Logout functionality
                 >
@@ -179,8 +195,16 @@ const Navigation = () => {
                 sx={{
                   color: "#ffffff",
                   textTransform: "none",
-                  fontSize: "1.25rem",
-                  padding: "10px 12px",
+                  fontSize: "1.5rem",
+                  padding: "8px 20px",
+                  margin: "0 5px",
+                  fontWeight: 'bold',
+                  borderRadius: '15px',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    backgroundColor: '#3e8a84',
+                    boxShadow: '0 0 20px #3e8a84, 0 0 30px #3e8a84',
+                  }
                 }}
                 component={Link}
                 to="/login"

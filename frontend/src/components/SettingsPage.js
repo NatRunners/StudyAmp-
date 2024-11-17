@@ -64,10 +64,11 @@ const SettingsPage = () => {
 
       
       {/* Low Attention Score Settings */}
-      <Typography variant="body1" sx={{ marginTop: "20px", maxWidth: 400 }}>
+      <Typography color='#32706a' variant="body1" sx={{ marginTop: "20px", maxWidth: 400 }}>
         Set Low Attention Score Threshold (0-100):
       </Typography>
       <Slider
+        color='#32706a'
         value={lowAttentionScore}
         onChange={handleLowAttentionScoreChange}
         min={0}
@@ -82,9 +83,9 @@ const SettingsPage = () => {
       <FormControlLabel
         control={
           <Checkbox
+            color='#32706a'
             checked={wantsNotifications}
             onChange={handleNotificationChange}
-            color="primary"
           />
         }
         label="Do you want to receive notifications?"
@@ -93,9 +94,10 @@ const SettingsPage = () => {
       {/* Frequency Settings */}
       {wantsNotifications && (
         <>
-          <FormControl fullWidth margin="normal" sx={{ maxWidth: 400 }}>
-            <InputLabel>Notification Frequency</InputLabel>
+          <FormControl color='#32706a' fullWidth margin="normal" sx={{ maxWidth: 400 }}>
+            <InputLabel color='#32706a'>Notification Frequency</InputLabel>
             <Select
+              color='#32706a'
               value={frequency}
               onChange={handleFrequencyChange}
               label="Notification Frequency"
@@ -128,7 +130,7 @@ const SettingsPage = () => {
 
       {/* Success Message */}
       {isSaved && (
-        <Typography sx={{ color: "green", marginTop: "10px", maxWidth: 400 }}>
+        <Typography sx={{ color: "#32706a", marginTop: "10px", maxWidth: 400 }}>
           Your preferences have been saved.
         </Typography>
       )}
