@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { Box, TextField, Button, Typography } from "@mui/material";
+import '../styles/LoginPage.css'; // Import your custom CSS file if you have one
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -21,7 +22,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh" }}>
+    <Box className="login-section" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh" }}>
       <Typography variant="h4" gutterBottom>Login</Typography>
       <TextField label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} sx={{ mb: 2, width: "300px" }} />
       <TextField label="Password" variant="outlined" type="password" value={password} onChange={(e) => setPassword(e.target.value)} sx={{ mb: 2, width: "300px" }} />
