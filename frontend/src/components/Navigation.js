@@ -12,8 +12,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import "../styles/Global.css";
 import { UserContext } from "../context/UserContext";  // Import UserContext for user state
 
