@@ -58,6 +58,14 @@ async def get_session_history(limit: int = 10, status: str = None):
         logging.error(f"Error fetching session history: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/sessions/{session_id}", response_model=SessionData)
+async def get_session(session_id: str):
+    session = session_manager.get_session(session_id)
+    if session:
+        return session.model_dump()
+    else:
+        raise HTTPException(status_code=404, detail="Session not found")
+
 @app.post("/api/process_audio")
 async def process_audio_endpoint(
     audio: UploadFile = File(...),

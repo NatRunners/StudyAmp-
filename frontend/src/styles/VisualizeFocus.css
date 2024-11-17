@@ -43,21 +43,25 @@
 
 /* Chart container styling */
 .chart-container {
-    max-width: 960px;
-    margin: 0 auto 40px;
+    max-width: 55%;
+    margin: 20px auto 80px;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Optional: to center align items horizontally */
 }
 
 .chart-container h2 {
-    font-size: 1.8em;
+    font-size: 2.8em;
     margin-bottom: 15px;
 }
 
 .chart-container canvas {
-    height: 400px !important;
+    height: auto;
+    max-height: 70%; 
 }
 
 /* Responsive design */

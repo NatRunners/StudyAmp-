@@ -8,6 +8,7 @@ import CreateSes from "./components/CreateSes";
 import SessionPage from "./components/SessionPage";
 import ViewSes from "./components/ViewSes";
 import VisualizeFocus from "./components/VisualizeFocus";
+import SessionReviewPage from "./components/SessionReviewPage";
 import "./App.css";
 
 // Define the dark theme inline
@@ -39,6 +40,7 @@ function App() {
           <Route path="/create" element={<SessionPage />} />
           <Route path="/view" element={<ViewSes />} />
           <Route path="/visualize" element={<VisualizeFocus />} />
+          <Route path="/session-review/:sessionId" element={<SessionReviewPage />} />
         </Routes>
       </Router>
     </ThemeProvider>

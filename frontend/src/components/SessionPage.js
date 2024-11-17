@@ -7,10 +7,12 @@ import {
   PointElement,
   Title,
   Tooltip,
+  Filler
 } from 'chart.js';
 import React, { useRef, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import '../styles/CreateSes.css';
 import '../styles/Global.css';
 
@@ -21,7 +23,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 const SessionPage = () => {
@@ -31,7 +34,11 @@ const SessionPage = () => {
       {
         label: 'Attention Score',
         data: [],
-        fill: false,
+        fill: {
+          target: { value: 50 },
+          above: 'rgba(75, 192, 192, 0.5)', // Color for values above 50
+          below: 'rgba(255, 99, 132, 0.5)'  // Color for values below 50
+        },
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1,
       },
@@ -105,7 +112,11 @@ const SessionPage = () => {
         {
           label: 'Attention Score',
           data: [],
-          fill: false,
+          fill: {
+            target: { value: 50 },
+            above: 'rgba(75, 192, 192, 0.5)', // Color for values above 50
+            below: 'rgba(255, 99, 132, 0.5)'  // Color for values below 50
+          },
           borderColor: 'rgb(75, 192, 192)',
           tension: 0.1,
         },
@@ -265,6 +276,30 @@ const SessionPage = () => {
     };
   };
 
+  const buttonVariants = {
+    hover: { scale: 1.1 },
+    tap: { scale: 0.9 },
+  };
+
+  const chartOptions = {
+    responsive: true,
+    animation: {
+      duration: 1000,
+      easing: 'easeInOutQuad',
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100,
+      }
+    }
+  };
+
   return (
     <div className="create-ses-page">
       <div className="text-content">
@@ -272,12 +307,25 @@ const SessionPage = () => {
         {!isConfirmed || sessionEnded ? (
           <>
             <p>Click start when you're ready to commence your session.</p>
-            <button onClick={handleConfirmStart} className="start-session-button">
+            <motion.button 
+              onClick={handleConfirmStart} 
+              className="start-session-button"
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+            >
               Start Session
-            </button>
-            <button onClick={handleBack} className="start-session-button" style={{ margin: 20 }}>
+            </motion.button>
+            <motion.button 
+              onClick={handleBack} 
+              className="start-session-button" 
+              style={{ margin: 20 }}
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+            >
               Back
-            </button>
+            </motion.button>
           </>
         ) : (
           <div style={{ width: '100%', maxWidth: '960px', margin: '0 auto' }}>
@@ -293,17 +341,20 @@ const SessionPage = () => {
                   <div className="average-score">
                     <h2>Average Attention Score: {movingAverage || 0}</h2>
                   </div>
-                  <Line data={chartData} width={960} height={400} />
+                  <Line data={chartData} options={chartOptions} width={960} height={400} />
                 </>
               )}
             </div>
-            <button
+            <motion.button
               onClick={handleStopSession}
               className="start-session-button"
               style={{ backgroundColor: '#dc2626', marginBottom: '2rem' }}
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
             >
               Stop Session
-            </button>
+            </motion.button>
           </div>
         )}
 

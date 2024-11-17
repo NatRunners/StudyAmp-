@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line, Bar } from 'react-chartjs-2';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -29,9 +31,9 @@ const ViewSes = () => {
   const [sessions, setSessions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedSession, setSelectedSession] = useState(null);
   const [metricsData, setMetricsData] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
@@ -67,10 +69,21 @@ const ViewSes = () => {
     }
   };
 
+  const calculateMovingAverage = (data, windowSize) => {
+    let result = [];
+    for (let i = 0; i < data.length; i++) {
+      const start = Math.max(0, i - windowSize + 1);
+      const subset = data.slice(start, i + 1);
+      const average = subset.reduce((a, b) => a + b, 0) / subset.length;
+      result.push(average);
+    }
+    return result;
+  };
+
   const calculateSessionMetrics = (sessions) => {
     const metrics = {
       averageAttentionBySession: {
-        labels: sessions.map(s => s.session_id.slice(0, 8)),
+        labels: sessions.map(s => new Date(s.start_time).toLocaleString()),
         datasets: [{
           label: 'Average Attention',
           data: sessions.map(s => s.average_attention || 0),
@@ -79,7 +92,7 @@ const ViewSes = () => {
         }]
       },
       sessionDurations: {
-        labels: sessions.map(s => s.session_id.slice(0, 8)),
+        labels: sessions.map(s => new Date(s.start_time).toLocaleString()),
         datasets: [{
           label: 'Session Duration (minutes)',
           data: sessions.map(s => {
@@ -92,7 +105,7 @@ const ViewSes = () => {
         }]
       },
       attentionTrend: {
-        labels: sessions.map(s => s.session_id.slice(0, 8)),
+        labels: sessions.map(s => new Date(s.start_time).toLocaleString()),
         datasets: [{
           label: 'Attention Trend',
           data: sessions.map(s => s.average_attention || 0),
@@ -130,6 +143,14 @@ const ViewSes = () => {
     return new Date(dateString).toLocaleString();
   };
 
+  const handleSessionClick = (sessionId) => {
+    navigate(`/session-review/${sessionId}`);
+  };
+
+  const handleReview = (sessionId) => {
+    navigate(`/session-review/${sessionId}`);
+  };
+
   const chartOptions = {
     responsive: true,
     plugins: {
@@ -145,11 +166,21 @@ const ViewSes = () => {
     }
   };
 
+  const modalVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 },
+  };
+
+  const buttonVariants = {
+    hover: { scale: 1.1 },
+    tap: { scale: 0.9 },
+  };
+
   if (isLoading) return <div className="loading-container"><div className="loading-spinner" /></div>;
   if (error) return <div className="error-message">{error}</div>;
 
   return (
-    <div className="view-ses-page">
+    <div className="view-sessions-page global-background">
       <h1>Session History & Analytics</h1>
       
       {isLoading ? <div className="loading-container"><div className="loading-spinner" /></div> :
@@ -160,18 +191,24 @@ const ViewSes = () => {
                 <>
                   <div className="metric-card">
                     <h3>Average Attention by Session</h3>
-                    <Bar data={metricsData.averageAttentionBySession} options={chartOptions} />
+                    <Bar data={metricsData.averageAttentionBySession} options={{
+                      ...chartOptions,
+                      scales: { x: { display: false }, y: { beginAtZero: true } }
+                    }} />
                   </div>
                   <div className="metric-card">
                     <h3>Session Durations</h3>
                     <Bar data={metricsData.sessionDurations} options={{
                       ...chartOptions,
-                      scales: { y: { beginAtZero: true } }
+                      scales: { x: { display: false }, y: { beginAtZero: true } }
                     }} />
                   </div>
                   <div className="metric-card">
                     <h3>Attention Trend</h3>
-                    <Line data={metricsData.attentionTrend} options={chartOptions} />
+                    <Line data={metricsData.attentionTrend} options={{
+                      ...chartOptions,
+                      scales: { x: { display: false }, y: { beginAtZero: true } }
+                    }} />
                   </div>
                 </>
               )}
@@ -179,13 +216,16 @@ const ViewSes = () => {
 
             <div className="sessions-grid">
               {sessions.map(session => (
-                <div key={session.session_id} className="session-card">
+                <div key={session.session_id} className="session-card" onClick={() => handleSessionClick(session.session_id)}>
                   <div className="session-header">
-                    <h3>Session {session.session_id.slice(0, 8)}</h3>
+                    <h3>Session {formatDate(session.start_time)}</h3>
                     <div className="session-actions">
                       <span className={`status-badge ${session.status}`}>{session.status}</span>
                       <button 
-                        onClick={() => setDeleteConfirm(session.session_id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteConfirm(session.session_id);
+                        }}
                         className="delete-button"
                         title="Delete session"
                       >
@@ -215,26 +255,37 @@ const ViewSes = () => {
             </div>
 
             {deleteConfirm && (
-              <div className="delete-modal">
+              <motion.div 
+                className="delete-modal"
+                initial="hidden"
+                animate="visible"
+                variants={modalVariants}
+              >
                 <div className="delete-modal-content">
                   <h3>Confirm Delete</h3>
                   <p>Are you sure you want to delete this session?</p>
                   <div className="delete-modal-actions">
-                    <button 
+                    <motion.button 
                       onClick={() => handleDeleteSession(deleteConfirm)}
                       className="confirm-delete"
+                      variants={buttonVariants}
+                      whileHover="hover"
+                      whileTap="tap"
                     >
                       Delete
-                    </button>
-                    <button 
+                    </motion.button>
+                    <motion.button 
                       onClick={() => setDeleteConfirm(null)}
                       className="cancel-delete"
+                      variants={buttonVariants}
+                      whileHover="hover"
+                      whileTap="tap"
                     >
                       Cancel
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
           </>
         )

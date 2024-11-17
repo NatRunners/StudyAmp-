@@ -85,6 +85,14 @@ class SessionManager:
     def get_session(self, session_id: str):
         return self.sessions.get(session_id)
 
+    def get_session_details(self, session_id: str) -> dict:
+        """Retrieve detailed data for a specific session"""
+        session = self.sessions.get(session_id)
+        if session:
+            return session.model_dump()
+        else:
+            return {}
+
     def get_all_sessions(self, limit: int = 10, status: str = None):
         """Get recent sessions with optional filtering"""
         try:

@@ -26,6 +26,18 @@
     font-size: 1.2em;
 }
 
+.start-session-button {
+  transition: transform 0.2s;
+}
+
+.start-session-button:hover {
+  transform: scale(1.1);
+}
+
+.start-session-button:active {
+  transform: scale(0.9);
+}
+
 @media (max-width: 768px) {
     .loading-container {
         height: 250px;
