@@ -9,6 +9,9 @@
     color: #ffffff;
     padding-top: 20px;
     text-align: center;
+    position: relative; 
+    padding-bottom: 60px;  
+    overflow: auto;  
 }
 
 /* Summary statistics section */
