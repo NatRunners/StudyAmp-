@@ -408,23 +408,45 @@ const SessionPage = () => {
               ) : (
                 <>
                 {/* need summaries[0] to not be null or empty */}
-                  {Array.isArray(summaries) && summaries.length > 0 && summaries[0] && (
-                    <div className="summaries-container" style={{ width: '100%' }}>
-                      {summaries.map((summary) => (
-                        <div key={summary} className="summary-card">
-                          <h3>Topic: {summary.topic}</h3>
-                          <p>Summary: {summary.summary}</p>
+                {Array.isArray(summaries) && summaries.length > 0 && summaries[0] && (
+                <div className="summaries-container">
+                  {summaries.map((summary, index) => (
+                    <div key={index} className="summary-card">
+                      <div className="card-section">
+                        {/* <span className="topic-tag">Topic {index + 1}</span> */}
+                        <h3>{summary.topic}</h3>
+                      </div>
+                      
+                      <div className="card-section">
+                        <p>{summary.summary}</p>
+                      </div>
+
+                      {Array.isArray(summary.key_points) && summary.key_points.length > 0 && (
+                        <div className="card-section">
                           <ul>
-                          {Array.isArray(summary.key_points) && summary.key_points.map((point, idx) => (
+                            {summary.key_points.map((point, idx) => (
                               <li key={idx}>{point}</li>
                             ))}
                           </ul>
                         </div>
-                      ))}
+                      )}
+
+                      <div className="summary-metadata">
+                        <span>Generated {new Date().toLocaleDateString()}</span>
+                      </div>
                     </div>
-                  )}
-                </>
+                  ))}
+                </div>
               )}
+
+
+              </>
+              )}
+            </div>
+
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+
+
 
               {sessionEnded && (
                 <button 
