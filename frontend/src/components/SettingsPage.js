@@ -45,11 +45,6 @@ const SettingsPage = () => {
     setLowAttentionScore(newValue);
   };
 
-  // Handle notification interval change (minute options)
-  const handleNotificationIntervalChange = (event) => {
-    setNotificationInterval(event.target.value);
-  };
-
   // Handle saving the settings (e.g., updating preferences in localStorage)
   const handleSaveSettings = () => {
     // Save the preferences to localStorage
@@ -106,15 +101,15 @@ const SettingsPage = () => {
               label="Notification Frequency"
               required
             >
-              <MenuItem value="minute">Every Minute</MenuItem>
-              <MenuItem value="five-minutes">Every 5 Minutes</MenuItem>
-              <MenuItem value="ten-minutes">Every 10 Minutes</MenuItem>
+              <MenuItem value="60">Every Minute</MenuItem>
+              <MenuItem value="300">Every 5 Minutes</MenuItem>
+              <MenuItem value="600">Every 10 Minutes</MenuItem>
             </Select>
           </FormControl>
 
           {frequency && (
             <Typography variant="body1" sx={{ marginTop: "10px", maxWidth: 400 }}>
-              If your concentration drops below {lowAttentionScore}%, you will receive notifications {frequency === "minute" ? "every minute" : frequency === "five-minutes" ? "every 5 minutes" : "every 10 minutes"}.
+              If your concentration drops below {lowAttentionScore}%, you will receive notifications {frequency === "60" ? "every minute" : frequency === "300" ? "every 5 minutes" : "every 10 minutes"}.
             </Typography>
           )}
         </>

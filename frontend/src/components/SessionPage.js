@@ -51,7 +51,7 @@ const SessionPage = () => {
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [summaries, setSummaries] = useState([]);
   const [processingStatus, setProcessingStatus] = useState('');
-
+  
   const audioChunks = useRef([]);
   const lowAttentionPeriods = useRef([]);
   const navigate = useNavigate();
@@ -65,17 +65,25 @@ const SessionPage = () => {
       });
     }
   }, [processingStatus]);
-  // Add a state for the low attention score threshold from settings
   const [lowAttentionScore, setLowAttentionScore] = useState(50);
+  const [notificationInterval, setNotificationInterval] = useState(60); // seconds
+
+  const notificationTimerRef = useRef(null);
 
   useEffect(() => {
-    // Retrieve the saved low attention score from localStorage
+    // Retrieve settings from localStorage
     const savedLowAttentionScore = localStorage.getItem('lowAttentionScore');
+    const savedNotificationInterval = localStorage.getItem('frequency');
+
     if (savedLowAttentionScore) {
       setLowAttentionScore(Number(savedLowAttentionScore));
     }
 
-    // Request notification permission if not already granted
+    if (savedNotificationInterval) {
+      setNotificationInterval(Number(savedNotificationInterval));
+    }
+
+    // Request notification permission
     if (Notification.permission !== 'granted') {
       Notification.requestPermission();
     }
@@ -162,6 +170,9 @@ const SessionPage = () => {
       setProcessingStatus('Stopping recording...');
       mediaRecorder.stop();
 
+      // Clear the notification timer when session stops
+      clearInterval(notificationTimerRef.current);
+
       await new Promise((resolve) => {
         mediaRecorder.onstop = async () => {
           if (audioChunks.current.length > 0 && lowAttentionPeriods.current.length > 0) {
@@ -247,13 +258,8 @@ const SessionPage = () => {
       const timestamp = new Date(data.timestamp * 1000).toLocaleTimeString();
 
       // Check if attention score drops below threshold
-      if (attentionScore < lowAttentionScore) {
-        // Send a notification if score is below the threshold
-        if (Notification.permission === 'granted') {
-          new Notification('Low Attention Score', {
-            body: `Attention score dropped to ${attentionScore}%`,
-          });
-        }
+      if (attentionScore > 0 && attentionScore < lowAttentionScore) {
+        // Add to low attention periods
         lowAttentionPeriods.current.push({
           timestamp: data.timestamp,
           score: attentionScore,
@@ -288,10 +294,28 @@ const SessionPage = () => {
       });
     };
 
-    newSocket.onerror = (error) => console.error('WebSocket error: ', error);
-    newSocket.onclose = () => console.log('WebSocket connection closed');
+    newSocket.onerror = (error) => {
+      console.error('WebSocket error: ', error);
+    };
+
+    newSocket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    // Start a timer to send notifications at the user-defined interval
+    notificationTimerRef.current = setInterval(() => {
+      if (lowAttentionPeriods.current.length > 0) {
+        const lastAttentionDrop = lowAttentionPeriods.current[lowAttentionPeriods.current.length - 1];
+        const score = lastAttentionDrop.score.toFixed(2);
+        if (Notification.permission === 'granted') {
+          new Notification('Low Attention Detected', {
+            body: `Attention score dropped to ${score}%`,
+          });
+        }
+      }
+    }, notificationInterval * 1000); // Interval in milliseconds
   };
-  
+
   return (
     <div className="create-ses-page" style={{ position: 'relative' }}>
       <div className="text-content">
