@@ -53,19 +53,22 @@
     font-size: 1rem;
 }
 
-.login-section .form button {
+.login-section button {
     padding: 10px;
     border-radius: 5px;
     border: none;
-    background-color: #90caf9;
+    background-color: #32706a;
+    box-shadow: 0 0 10px #32706a;
     color: white;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.login-section .form button:hover {
-    background-color: #3f8fcd;
+.login-section button:hover {
+    box-shadow: 0 0 20px #3e8a84, 0 0 30px #3e8a84;    
+    background-color: #3e8a84;
+    color: #EEEEEE;
 }
 
 /* Responsive styling for Login page */
