@@ -1,43 +1,24 @@
-.loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 300px;
-    width: 100%;
-    padding: 20px;
-  }
-  
-  .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(255, 255, 255, 0.2);
-    border-top: 5px solid #3a8dff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
-  }
-
-  /* Update the create-ses-page class to use space-between */
+/* Enhanced SessionPage styling */
 .create-ses-page {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   min-height: 100vh;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../images/background.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url("../images/background.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
   color: #ffffff;
   text-align: center;
-  padding: 20px;
+  padding: 40px 20px;
 }
 
-/* Update text-content to create space between elements */
+/* Improved text content styling */
 .text-content {
   max-width: 800px;
+  width: 100%;
   animation: fadeIn 1.5s ease-out;
   display: flex;
   flex-direction: column;
@@ -45,91 +26,405 @@
 }
 
 .text-content h1 {
-  margin-top: 100px;
+  margin-top: 80px;
   margin-bottom: 40px;
-  font-size: 2.5em;
+  font-size: 3em;
   text-align: center;
   width: 100%;
   padding: 0;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .text-content p {
-  margin: auto 0;
+  margin: 0 auto 50px;
   font-size: 1.5em;
-  line-height: 1.6;
-  padding: 100px 40px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-bottom: 50px;
-
+  line-height: 1.8;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  max-width: 700px;
+  transition: transform 0.3s ease;
 }
 
+.text-content p:hover {
+  transform: translateY(-2px);
+}
+
+/* Enhanced button styling */
 .start-session-button {
-  width: 200px; 
-  padding: 15px 0;
+  width: 220px;
+  padding: 18px 0;
   align-self: center;
+  font-size: 1.2em;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #32706a 0%, #265450 100%);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(50, 112, 106, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  cursor: pointer;
+  margin-top: 40px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
 }
 
-/* Keep existing responsive design */
+.start-session-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(62, 138, 132, 0.4);
+  background: linear-gradient(135deg, #3e8a84 0%, #32706a 100%);
+  width: 240px;
+}
+
+/* Improved graph container styling */
+.graph-container {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.graph-container:hover {
+  transform: translateY(-3px);
+}
+
+.average-score {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.average-score h2 {
+  font-size: 1.8em;
+  margin: 0;
+  color: #5fb7b0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced loading animation */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  width: 100%;
+  padding: 20px;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(95, 183, 176, 0.1);
+  border-top: 4px solid #5fb7b0;
+  border-radius: 50%;
+  animation: forwards spin 1s linear infinite;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(95, 183, 176, 0.2);
+}
+
+/* Enhanced Summary Cards with modern design */
+.summaries-container {
+  display: grid;
+  gap: 40px;
+  width: 100%;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.summary-card {
+  position: relative;
+  background: linear-gradient(
+    169deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border-radius: 24px;
+  padding: 35px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(95, 183, 176, 0.2);
+}
+
+.summary-card:hover::before {
+  left: 100%;
+}
+
+/* Topic header styling */
+.summary-card h3 {
+  position: relative;
+  color: #5fb7b0;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.02em;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.summary-card h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #5fb7b0, transparent);
+  border-radius: 2px;
+}
+
+/* Summary text styling */
+.summary-card p {
+  font-size: 1.15em;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Key points section */
+.summary-card ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+  position: relative;
+}
+
+.summary-card ul::before {
+  content: 'Key Points';
+  display: block;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #5fb7b0;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+}
+
+.summary-card li {
+  position: relative;
+  padding: 12px 12px 12px 35px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1em;
+  line-height: 1.6;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.summary-card li:hover {
+  transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(95, 183, 176, 0.2);
+}
+
+.summary-card li::before {
+  content: "→";
+  position: absolute;
+  left: 12px;
+  color: #5fb7b0;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.summary-card li:hover::before {
+  transform: translateX(3px);
+}
+
+/* Card sections */
+.card-section {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.card-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Topic tag */
+.topic-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(95, 183, 176, 0.15);
+  border-radius: 20px;
+  font-size: 0.9em;
+  color: #5fb7b0;
+  margin-bottom: 15px;
+  border: 1px solid rgba(95, 183, 176, 0.2);
+}
+
+/* Metadata section */
+.summary-metadata {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .summaries-container {
+    gap: 25px;
+    padding: 15px;
+  }
+
+  .summary-card {
+    padding: 25px;
+  }
+
+  .summary-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+
+  .summary-card p {
+    font-size: 1.05em;
+    margin-bottom: 20px;
+  }
+
+  .summary-card li {
+    font-size: 1em;
+    padding: 10px 10px 10px 30px;
+  }
+
+  .summary-metadata {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+/* Animation keyframes */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply entrance animation to cards */
+.summary-card {
+  animation: cardEntrance 0.8s ease-out;
+  animation-fill-
+
+/* Stagger the animation for multiple cards */
+.summary-card:nth-child(1) { animation-delay: 0.1s; }
+.summary-card:nth-child(2) { animation-delay: 0.2s; }
+.summary-card:nth-child(3) { animation-delay: 0.3s; }}
+
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive design improvements */
 @media (max-width: 768px) {
   .text-content h1 {
-      margin-top: 60px;
-      font-size: 2em;
+    margin-top: 60px;
+    font-size: 2.2em;
   }
+
   .text-content p {
-      font-size: 1em;
+    font-size: 1.1em;
+    padding: 25px;
   }
+
   .start-session-button {
-      padding: 12px 24px;
-      font-size: 1.1em;
-      margin-bottom: 60px;
+    width: 180px;
+    padding: 15px 0;
+    font-size: 1.1em;
+  }
+
+  .graph-container {
+    padding: 20px;
+  }
+
+  .average-score h2 {
+    font-size: 1.4em;
+  }
+
+  .summary-card {
+    padding: 20px;
+  }
+
+  .summary-card h3 {
+    font-size: 1.2em;
+  }
+
+  .summary-card p {
+    font-size: 1em;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
   }
 }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  .loading-container p {
-    color: #ffffff;
-    font-size: 1.2em;
-    text-align: center;
-    margin: 0;
-  }
-  
-  .graph-container .loading-container {
-    min-height: 200px;
-    padding: 0;
-  }
-  
-  .summary-card .loading-container {
-    min-height: 150px;
-    background: transparent;
-  }
-  
-  @media (max-width: 768px) {
-    .loading-container {
-      min-height: 200px;
-      padding: 15px;
-    }
-  
-    .loading-spinner {
-      width: 35px;
-      height: 35px;
-      border-width: 3px;
-    }
-  
-    .loading-container p {
-      font-size: 1em;
-    }
-  
-    .graph-container .loading-container {
-      min-height: 150px;
-    }
-  
-    .summary-card .loading-container {
-      min-height: 100px;
-    }
-  }
+
+

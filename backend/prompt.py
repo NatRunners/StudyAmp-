@@ -23,6 +23,7 @@ class PromptGenerator:
         Return: Audio_Sum
         
         The timestamps are times where the user lost focus.
+        based on the focus timestamps, analyze the key points covered during the specified time intervals.
         """
 
         return prompt
