@@ -1,19 +1,38 @@
-import { Stack, Link } from 'expo-router';
+import { Stack } from 'expo-router';
 import React from 'react';
-
-import { Button } from '~/components/Button';
+import { Alert } from 'react-native';
 import { Container } from '~/components/Container';
-import { ScreenContent } from '~/components/ScreenContent';
+import { RecordingSession } from '~/components/RecordingSession';
+import { GEMINI_API_KEY, validateConfig } from '~/utils/config';
 
 export default function Home() {
+  React.useEffect(() => {
+    const errors = validateConfig();
+    if (errors.length > 0) {
+      Alert.alert(
+        'Configuration Error',
+        errors.join('\n'),
+        [{ text: 'OK' }]
+      );
+    }
+  }, []);
+
   return (
     <>
-      <Stack.Screen options={{ title: 'Home' }} />
+      <Stack.Screen 
+        options={{ 
+          title: 'StudyAmp',
+          headerTitleStyle: {
+            fontSize: 20,
+            fontWeight: 'bold',
+          },
+        }} 
+      />
       <Container>
-        <ScreenContent path="app/index.tsx" title="Starter" />
-        <Link href={{ pathname: '/details', params: { name: 'Amp' } }} asChild>
-          <Button title="Show Details" />
-        </Link>
+        <RecordingSession 
+          apiKey={GEMINI_API_KEY}
+          lowAttentionThreshold={90}
+        />
       </Container>
     </>
   );
