@@ -1,4 +1,5 @@
 import { Stack, Link } from 'expo-router';
+import React from 'react';
 
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
@@ -9,8 +10,8 @@ export default function Home() {
     <>
       <Stack.Screen options={{ title: 'Home' }} />
       <Container>
-        <ScreenContent path="app/index.tsx" title="Starter Template" />
-        <Link href={{ pathname: '/details', params: { name: 'Dan' } }} asChild>
+        <ScreenContent path="app/index.tsx" title="Starter" />
+        <Link href={{ pathname: '/details', params: { name: 'Amp' } }} asChild>
           <Button title="Show Details" />
         </Link>
       </Container>
