@@ -12,6 +12,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@config-plugins/ffmpeg-kit-react-native": "^9.0.0",
     "@expo/vector-icons": "^14.0.0",
     "@google/generative-ai": "^0.21.0",
     "@react-native-async-storage/async-storage": "1.23.1",
